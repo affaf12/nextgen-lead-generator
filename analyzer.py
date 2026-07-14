@@ -5,7 +5,20 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import re
+import threading
 import config
+
+# Streamlit's UI calls (like a progress bar) only work when called from a
+# thread that has Streamlit's "script run context" attached. Our website
+# checks run in a background ThreadPoolExecutor, so on Streamlit deployments
+# we need to manually propagate that context into each worker thread. This
+# is a no-op (and totally safe) when streamlit isn't installed, e.g. the
+# plain Flask app — it just won't try to attach anything.
+try:
+    from streamlit.runtime.scriptrunner import add_script_run_ctx, get_script_run_ctx
+    _STREAMLIT_AVAILABLE = True
+except ImportError:
+    _STREAMLIT_AVAILABLE = False
 
 
 def normalize_url(url):
@@ -66,6 +79,7 @@ def check_website(url):
         - has_modern_meta: bool
         - tech_signals: list of detected tech clues
         - issues: list of issues found
+        - email: str or None
         - score: int (0-100, higher = more likely to need web dev)
     """
     report = {
@@ -237,9 +251,17 @@ def analyze_leads(leads, progress_callback=None):
     """
     total = len(leads)
     completed = 0
+    main_thread_ctx = get_script_run_ctx() if _STREAMLIT_AVAILABLE else None
 
     def _check_one(lead):
         nonlocal completed
+        # Propagate Streamlit's context into this worker thread so that
+        # progress_callback (which may touch Streamlit UI elements like
+        # st.progress) doesn't raise NoSessionContext. Safe no-op outside
+        # of a Streamlit run.
+        if main_thread_ctx is not None:
+            add_script_run_ctx(threading.current_thread(), main_thread_ctx)
+
         url = lead.get("website")
         if url:
             report = check_website(url)

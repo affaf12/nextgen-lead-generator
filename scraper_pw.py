@@ -2,6 +2,7 @@
 
 import os
 import random
+import re
 
 from playwright.sync_api import Error as PlaywrightError, sync_playwright
 
@@ -89,27 +90,56 @@ def _extract_detail(page):
     """Extract business details from the detail panel."""
     info = {}
 
-    # Name (primary selector, with a fallback to any visible h1 in the panel
-    # since Google periodically changes its hashed CSS class names)
+    # Name
     name_el = page.locator("h1.DUwDvf")
     if name_el.count() == 0:
         name_el = page.locator('div[role="main"] h1')
     info["name"] = name_el.first.inner_text().strip() if name_el.count() > 0 else "Unknown"
 
-    # Rating
-    rating_el = page.locator("div.F7nice span[aria-hidden='true']")
-    info["rating"] = rating_el.first.inner_text().strip() if rating_el.count() > 0 else "N/A"
-
-    # Review count - direct int return karo
-    reviews_el = page.locator("div.F7nice span span")
-    if reviews_el.count() > 0:
-        text = reviews_el.first.inner_text().strip().replace("(", "").replace(")", "").replace(",", "")
-        try:
-            info["reviews"] = int(text) if text else 0
-        except:
-            info["reviews"] = 0
-    else:
-        info["reviews"] = 0
+    # Rating + Reviews - FIXED WITH PROPER INDENTATION
+    rating = "N/A"
+    reviews = 0
+    
+    # Try multiple selectors for rating
+    rating_selectors = [
+        'div.F7nice span[aria-hidden="true"]',
+        'span[aria-label*="stars"]',
+        'div[jsaction*="pane.rating"] span:first-child'
+    ]
+    
+    for sel in rating_selectors:
+        rating_el = page.locator(sel)
+        if rating_el.count() > 0:
+            rating_text = rating_el.first.inner_text().strip()
+            if rating_text and rating_text != "":
+                rating = rating_text
+                break
+    
+    # Reviews - multiple selectors + regex extraction
+    reviews_selectors = [
+        'div.F7nice span[aria-label*="reviews"]',
+        'div.F7nice span span',
+        'button[jsaction*="pane.rating"] span'
+    ]
+    
+    for sel in reviews_selectors:
+        reviews_el = page.locator(sel)
+        if reviews_el.count() > 0:
+            for i in range(reviews_el.count()):
+                text = reviews_el.nth(i).inner_text().strip()
+                # Extract number from text like "(123)" or "123 reviews" or "1,234"
+                num_match = re.search(r'(\d[\d,]*)', text)
+                if num_match:
+                    try:
+                        reviews = int(num_match.group(1).replace(",", ""))
+                        break
+                    except:
+                        continue
+            if reviews > 0:
+                break
+    
+    info["rating"] = rating
+    info["reviews"] = reviews
 
     # Category / type
     cat_el = page.locator("button.DkEaL")

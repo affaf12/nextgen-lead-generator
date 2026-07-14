@@ -157,22 +157,23 @@ def render_leads_table(df):
         score = int(lead.get("lead_score") or 0)
         color = _score_color(score)
 
-        name = html_lib.escape(str(lead.get("name") or "N/A"))
-        rating = lead.get("rating") or "N/A"
-        reviews = lead.get("reviews") or 0
-        category = html_lib.escape(str(lead.get("category") or "N/A"))
-        phone = html_lib.escape(str(lead.get("phone") or "N/A"))
-        address = html_lib.escape(str(lead.get("address") or ""))
+        name = html_lib.escape(str(lead.get("name")) if pd.notna(lead.get("name")) else "N/A")
+        rating = lead.get("rating") if pd.notna(lead.get("rating")) else "N/A"
+        reviews = lead.get("reviews") if pd.notna(lead.get("reviews")) else 0
+        category = html_lib.escape(str(lead.get("category")) if pd.notna(lead.get("category")) else "N/A")
+        phone = html_lib.escape(str(lead.get("phone")) if pd.notna(lead.get("phone")) else "N/A")
+        address = html_lib.escape(str(lead.get("address")) if pd.notna(lead.get("address")) else "")
 
         email = lead.get("email")
-        if email:
-            email_html = f'<a href="mailto:{html_lib.escape(email)}" style="color:#38bdf8;">{html_lib.escape(email)}</a>'
+        if pd.notna(email) and str(email).strip():
+            email_html = f'<a href="mailto:{html_lib.escape(str(email))}" style="color:#38bdf8;">{html_lib.escape(str(email))}</a>'
         else:
             email_html = '<span style="color:#71717a;">N/A</span>'
 
         website = lead.get("website")
+        has_website = pd.notna(website) and str(website).strip()
         report = lead.get("website_report") or {}
-        issues = report.get("issues") or []
+        issues = report.get("issues") if isinstance(report, dict) else None
         if issues:
             issues_html = "".join(
                 f'<li style="font-size:12px;color:#fbbf24;">⚠ {html_lib.escape(str(i))}</li>' for i in issues
@@ -180,7 +181,7 @@ def render_leads_table(df):
         else:
             issues_html = '<li style="font-size:12px;color:#71717a;">None</li>'
 
-        if website:
+        if has_website:
             site_url = str(website) if str(website).startswith("http") else f"https://{website}"
             website_html = (
                 f'<a href="{html_lib.escape(site_url)}" target="_blank" '
@@ -189,7 +190,8 @@ def render_leads_table(df):
         else:
             website_html = '<span style="color:#ef4444;font-weight:700;">NO WEBSITE</span>'
 
-        maps_url = lead.get("maps_url") or "#"
+        maps_url_raw = lead.get("maps_url")
+        maps_url = str(maps_url_raw) if pd.notna(maps_url_raw) else "#"
         maps_html = (
             f'<a href="{html_lib.escape(maps_url)}" target="_blank" '
             f'rel="noopener noreferrer" style="color:#a78bfa;text-decoration:none;">📍 Maps</a>'

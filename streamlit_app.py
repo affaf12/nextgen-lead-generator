@@ -93,7 +93,7 @@ with col3:
 with col4:
     max_results = st.number_input("Max Results", min_value=1, max_value=1000, value=20)
 
-search_button = st.button("🔍 Search Leads", use_container_width=True)
+search_button = st.button("🔍 Search Leads", width='stretch')
 
 # Session state for results
 if 'leads_df' not in st.session_state:
@@ -137,7 +137,6 @@ if search_button:
             st.error(f"Error: {str(e)}")
             st.exception(e)
 
-
 # ── Custom HTML table renderer (mirrors the Flask dashboard) ────────────
 def _score_color(score):
     if score >= 80:
@@ -145,7 +144,6 @@ def _score_color(score):
     if score >= 50:
         return "#fb923c"   # warm
     return "#22c55e"       # low priority
-
 
 def render_leads_table(df):
     if df.empty:
@@ -165,8 +163,9 @@ def render_leads_table(df):
         address = html_lib.escape(str(lead.get("address")) if pd.notna(lead.get("address")) else "")
 
         email = lead.get("email")
-        if pd.notna(email) and str(email).strip():
-            email_html = f'<a href="mailto:{html_lib.escape(str(email))}" style="color:#38bdf8;">{html_lib.escape(str(email))}</a>'
+        if pd.notna(email) and str(email).strip() and str(email).lower() != 'nan':
+            email_safe = html_lib.escape(str(email))
+            email_html = f'<a href="mailto:{email_safe}" style="color:#38bdf8;">{email_safe}</a>'
         else:
             email_html = '<span style="color:#71717a;">N/A</span>'
 
@@ -237,7 +236,6 @@ def render_leads_table(df):
     """
     st.markdown(table_html, unsafe_allow_html=True)
 
-
 # ── Display Results ───────────────────────────────────────────────────
 if st.session_state.leads_df is not None and not st.session_state.leads_df.empty:
     df = st.session_state.leads_df
@@ -280,7 +278,7 @@ if st.session_state.leads_df is not None and not st.session_state.leads_df.empty
         data=csv,
         file_name=f"nextgen_leads_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
         mime="text/csv",
-        use_container_width=True
+        width='stretch'
     )
 
 # Footer

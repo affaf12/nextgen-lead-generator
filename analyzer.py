@@ -20,7 +20,6 @@ try:
 except ImportError:
     _STREAMLIT_AVAILABLE = False
 
-
 def normalize_url(url):
     """Ensure URL has a proper scheme."""
     if not url:
@@ -29,7 +28,6 @@ def normalize_url(url):
     if not url.startswith(("http://", "https://")):
         url = "https://" + url
     return url
-
 
 EMAIL_REGEX = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
 
@@ -41,7 +39,6 @@ _EMAIL_IGNORE_DOMAINS = (
     "schema.org", "w3.org", "gstatic.com", "google.com", "cloudflare.com",
 )
 _EMAIL_IGNORE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp")
-
 
 def _extract_email(soup, html_text):
     """
@@ -65,7 +62,6 @@ def _extract_email(soup, html_text):
         return match
 
     return None
-
 
 def check_website(url):
     """
@@ -237,7 +233,6 @@ def check_website(url):
 
     return report
 
-
 def analyze_leads(leads, progress_callback=None):
     """
     Analyze websites for a list of scraped leads.
@@ -291,7 +286,7 @@ def analyze_leads(leads, progress_callback=None):
     with ThreadPoolExecutor(max_workers=config.MAX_CONCURRENT_CHECKS) as pool:
         futures = {pool.submit(_check_one, lead): lead for lead in leads}
         for future in as_completed(futures):
-            future.result()  # propagate exceptions
+            future.result() # propagate exceptions
 
     # Sort by score descending (best leads first)
     leads.sort(key=lambda x: x.get("lead_score", 0), reverse=True)

@@ -1,0 +1,35 @@
+# Virtual environment
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs & debug screenshots (can get large, and contain scraped data)
+logs/
+*.log
+debug_*.png
+
+# Local Playwright browser installs (huge, and reinstalled per-machine anyway)
+.playwright-browsers/
+ms-playwright/
+
+# Environment variables / secrets — NEVER commit these
+.env
+.env.local
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+
+# Vercel
+.vercel
+
+# Deps-install marker used by the launcher script
+venv/.deps_installed

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "uv pip install --system -r requirements.txt && PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers /usr/bin/python3 -m playwright install chromium --only-shell",
+  "buildCommand": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers /usr/bin/python3 -m playwright install chromium --only-shell && mkdir -p public && echo ok > public/.keep",
+  "env": {
+    "PLAYWRIGHT_BROWSERS_PATH": ".playwright-browsers"
+  },
+  "functions": {
+    "api/index.py": {
+      "memory": 2048,
+      "maxDuration": 300,
+      "excludeFiles": "{__pycache__/**,debug_*.png,test_*.py,*.log}"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.py"
+    }
+  ]
+}

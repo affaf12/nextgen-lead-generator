@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.vercel/
+.git/
+.gitignore
+debug_*.png
+*.log
+test_*.py
+api/
+vercel.json
+.vercelignore

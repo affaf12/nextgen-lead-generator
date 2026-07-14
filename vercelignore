@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+debug_*.png
+*.log
+.env
+.env.*
+test_*.py

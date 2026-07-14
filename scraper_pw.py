@@ -7,7 +7,6 @@ from playwright.sync_api import Error as PlaywrightError, sync_playwright
 
 import config
 
-
 def _accept_cookies(page):
     """Try to dismiss the Google consent/cookie banner if present."""
     try:
@@ -27,7 +26,6 @@ def _accept_cookies(page):
                 return
     except Exception:
         pass
-
 
 def _collect_listing_urls(page, max_results, progress_callback=None):
     """
@@ -87,7 +85,6 @@ def _collect_listing_urls(page, max_results, progress_callback=None):
 
     return ordered_urls[:max_results]
 
-
 def _extract_detail(page):
     """Extract business details from the detail panel."""
     info = {}
@@ -106,14 +103,14 @@ def _extract_detail(page):
     # Review count - direct int return karo
     reviews_el = page.locator("div.F7nice span span")
     if reviews_el.count() > 0:
-    text = reviews_el.first.inner_text().strip().replace("(", "").replace(")", "").replace(",", "")
-    try:
-        info["reviews"] = int(text) if text else 0
-    except:
-        info["reviews"] = 0
+        text = reviews_el.first.inner_text().strip().replace("(", "").replace(")", "").replace(",", "")
+        try:
+            info["reviews"] = int(text) if text else 0
+        except:
+            info["reviews"] = 0
     else:
         info["reviews"] = 0
-        
+
     # Category / type
     cat_el = page.locator("button.DkEaL")
     info["category"] = cat_el.inner_text().strip() if cat_el.count() > 0 else "N/A"
@@ -135,7 +132,6 @@ def _extract_detail(page):
 
     return info
 
-
 def _should_force_headless():
     """
     Decide whether we must run headless regardless of config.HEADLESS.
@@ -153,7 +149,6 @@ def _should_force_headless():
     if os.name != "nt" and not os.environ.get("DISPLAY"):
         return True
     return False
-
 
 def _launch_browser(pw):
     """Launch Chromium and provide a useful setup error if browsers are missing."""
@@ -176,7 +171,6 @@ def _launch_browser(pw):
                 "Playwright Chromium is not installed. Run: python -m playwright install chromium"
             ) from exc
         raise
-
 
 def scrape_google_maps(query, max_results=None, progress_callback=None):
     """

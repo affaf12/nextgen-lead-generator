@@ -103,14 +103,17 @@ def _extract_detail(page):
     rating_el = page.locator("div.F7nice span[aria-hidden='true']")
     info["rating"] = rating_el.first.inner_text().strip() if rating_el.count() > 0 else "N/A"
 
-    # Review count
+    # Review count - direct int return karo
     reviews_el = page.locator("div.F7nice span span")
     if reviews_el.count() > 0:
-        text = reviews_el.first.inner_text().strip().replace("(", "").replace(")", "").replace(",", "")
-        info["reviews"] = text
+    text = reviews_el.first.inner_text().strip().replace("(", "").replace(")", "").replace(",", "")
+    try:
+        info["reviews"] = int(text) if text else 0
+    except:
+        info["reviews"] = 0
     else:
-        info["reviews"] = "0"
-
+        info["reviews"] = 0
+        
     # Category / type
     cat_el = page.locator("button.DkEaL")
     info["category"] = cat_el.inner_text().strip() if cat_el.count() > 0 else "N/A"

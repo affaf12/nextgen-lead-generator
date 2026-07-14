@@ -145,5 +145,21 @@ if st.session_state.leads_df is not None and not st.session_state.leads_df.empty
         cold_df = df[df['lead_score'] < 50]
         st.dataframe(cold_df[['lead_score', 'name', 'phone', 'email', 'website']], use_container_width=True, hide_index=True)
 
-    # Download CSV
-    csv =
+    # Download CSV - Yahan fix kiya hai
+    csv = df.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="📥 Download CSV",
+        data=csv,
+        file_name=f"nextgen_leads_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+        mime="text/csv",
+        use_container_width=True
+    )
+
+# Footer
+st.divider()
+st.markdown(
+    f"<p style='text-align: center; color: #71717a; font-size: 12px;'>"
+    f"&copy; {datetime.now().year} NextGen Analytics. All rights reserved."
+    f"</p>", 
+    unsafe_allow_html=True
+)

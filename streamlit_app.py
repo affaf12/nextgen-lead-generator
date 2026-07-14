@@ -157,7 +157,8 @@ def render_leads_table(df):
 
         name = html_lib.escape(str(lead.get("name")) if pd.notna(lead.get("name")) else "N/A")
         rating = lead.get("rating") if pd.notna(lead.get("rating")) else "N/A"
-        reviews = lead.get("reviews") if pd.notna(lead.get("reviews")) else 0
+        reviews_raw = lead.get("reviews")
+        reviews = int(reviews_raw) if pd.notna(reviews_raw) else 0
         category = html_lib.escape(str(lead.get("category")) if pd.notna(lead.get("category")) else "N/A")
         phone = html_lib.escape(str(lead.get("phone")) if pd.notna(lead.get("phone")) else "N/A")
         address = html_lib.escape(str(lead.get("address")) if pd.notna(lead.get("address")) else "")

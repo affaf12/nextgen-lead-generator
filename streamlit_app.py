@@ -5,9 +5,13 @@ import sys
 import os
 
 # Playwright browser install on Streamlit Cloud - sabse pehle
+# NOTE: We only install the Chromium *browser binary* here (no --with-deps /
+# install-deps). The system-level libraries Chromium needs (libnss3, libatk,
+# etc.) are installed separately by Streamlit Cloud via packages.txt at
+# BUILD time, when the process *does* have root. Calling "install-deps"
+# here at runtime tries to run apt-get without root and always fails.
 if not os.path.exists("/home/appuser/.cache/ms-playwright"):
     subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
-    subprocess.run([sys.executable, "-m", "playwright", "install-deps", "chromium"], check=True)
 
 import streamlit as st
 import pandas as pd

@@ -91,7 +91,7 @@ with col3:
     country = st.selectbox("Country", config.COUNTRY_OPTIONS, index=config.COUNTRY_OPTIONS.index("Pakistan"))
 
 with col4:
-    max_results = st.number_input("Max Results", min_value=1, max_value=1000, value=20)
+    max_results = st.number_input("Max Results", min_value=1, max_value=1000000, value=20)
 
 search_button = st.button("🔍 Search Leads", width='stretch')
 
@@ -275,13 +275,12 @@ if st.session_state.leads_df is not None and not st.session_state.leads_df.empty
     csv_df = df.drop(columns=["website_report"], errors="ignore")
     csv = csv_df.to_csv(index=False).encode('utf-8')
     st.download_button(
-        label="📥 Download CSV",
-        data=csv,
-        file_name=f"nextgen_leads_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
-        mime="text/csv",
-        width='stretch'
-    )
-
+    label="📥 Download CSV",
+    data=csv,
+    file_name=f"nextgen_leads_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+    mime="text/csv",
+    width='stretch'
+)
 # Footer
 st.divider()
 st.markdown(

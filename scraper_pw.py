@@ -133,6 +133,25 @@ def _extract_detail(page):
     return info
 
 
+def _should_force_headless():
+    """
+    Decide whether we must run headless regardless of config.HEADLESS.
+
+    Any cloud host (Streamlit Cloud, HuggingFace Spaces, Vercel, etc.) is a
+    Linux server with no real screen — trying to launch a headed browser
+    there fails with "Missing X server or $DISPLAY". We only want headed
+    mode on a real local desktop (e.g. your Windows laptop), so: force
+    headless whenever we're on Linux and there's no DISPLAY set. Windows
+    never sets $DISPLAY either, but os.name is "nt" there, so this check
+    correctly leaves local Windows runs alone.
+    """
+    if os.environ.get("VERCEL") or os.environ.get("SPACE_ID") or os.environ.get("STREAMLIT_RUNTIME_ENV"):
+        return True
+    if os.name != "nt" and not os.environ.get("DISPLAY"):
+        return True
+    return False
+
+
 def _launch_browser(pw):
     """Launch Chromium and provide a useful setup error if browsers are missing."""
     launch_args = [
@@ -141,9 +160,10 @@ def _launch_browser(pw):
         "--disable-gpu",
         "--disable-setuid-sandbox",
     ]
+    headless = True if _should_force_headless() else config.HEADLESS
     try:
         return pw.chromium.launch(
-            headless=True if os.environ.get("VERCEL") else config.HEADLESS,
+            headless=headless,
             args=launch_args,
         )
     except PlaywrightError as exc:

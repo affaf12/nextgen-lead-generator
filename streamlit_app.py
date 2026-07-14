@@ -156,9 +156,15 @@ def render_leads_table(df):
         color = _score_color(score)
 
         name = html_lib.escape(str(lead.get("name")) if pd.notna(lead.get("name")) else "N/A")
-        rating = lead.get("rating") if pd.notna(lead.get("rating")) else "N/A"
-        reviews_raw = lead.get("reviews")
-        reviews = int(reviews_raw) if pd.notna(reviews_raw) else 0
+
+        # Rating fix - float handle karo
+        rating = pd.to_numeric(lead.get("rating"), errors='coerce')
+        rating = f"{rating:.1f}" if pd.notna(rating) else "N/A"
+
+        # Reviews fix - string/float sab handle karo
+        reviews = pd.to_numeric(lead.get("reviews"), errors='coerce')
+        reviews = int(reviews) if pd.notna(reviews) else 0
+
         category = html_lib.escape(str(lead.get("category")) if pd.notna(lead.get("category")) else "N/A")
         phone = html_lib.escape(str(lead.get("phone")) if pd.notna(lead.get("phone")) else "N/A")
         address = html_lib.escape(str(lead.get("address")) if pd.notna(lead.get("address")) else "")

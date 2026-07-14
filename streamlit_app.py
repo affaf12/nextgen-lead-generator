@@ -33,7 +33,7 @@ st.markdown("""
 <style>
     .stApp {
         background-color: #0f1117;
-        color: #e4e4e7;
+        color: #e4e7;
     }
     .stButton>button {
         background: linear-gradient(135deg, #6c63ff, #00d2ff);
@@ -50,8 +50,8 @@ st.markdown("""
     /* Dark-theme the input widgets, which default to white */
     .stTextInput input, .stNumberInput input {
         background-color: #18181b !important;
-        color: #e4e4e7 !important;
-        border: 1px solid #3f3f46 !important;
+        color: #e4e7 !important;
+        border: 1px solid #3f46 !important;
     }
     .stSelectbox > div > div {
         background-color: #18181b !important;
@@ -157,11 +157,11 @@ def render_leads_table(df):
 
         name = html_lib.escape(str(lead.get("name")) if pd.notna(lead.get("name")) else "N/A")
 
-        # Rating fix - float handle karo
+        # Rating - safe convert
         rating = pd.to_numeric(lead.get("rating"), errors='coerce')
         rating = f"{rating:.1f}" if pd.notna(rating) else "N/A"
 
-        # Reviews fix - string/float sab handle karo
+        # Reviews - BULLETPROOF FIX
         reviews = pd.to_numeric(lead.get("reviews"), errors='coerce')
         reviews = int(reviews) if pd.notna(reviews) else 0
 
@@ -281,12 +281,13 @@ if st.session_state.leads_df is not None and not st.session_state.leads_df.empty
     csv_df = df.drop(columns=["website_report"], errors="ignore")
     csv = csv_df.to_csv(index=False).encode('utf-8')
     st.download_button(
-    label="📥 Download CSV",
-    data=csv,
-    file_name=f"nextgen_leads_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
-    mime="text/csv",
-    width='stretch'
-)
+        label="📥 Download CSV",
+        data=csv,
+        file_name=f"nextgen_leads_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+        mime="text/csv",
+        width='stretch'
+    )
+
 # Footer
 st.divider()
 st.markdown(

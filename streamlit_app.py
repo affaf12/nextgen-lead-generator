@@ -60,16 +60,31 @@ st.markdown("""
     }
     /* Stat cards */
     div[data-testid="stMetric"] {
-        background-color: #18181b;
-        border: 1px solid #27272a;
-        border-radius: 10px;
-        padding: 16px 18px;
+        background-color: #18181b !important;
+        border: 1px solid #27272a !important;
+        border-radius: 10px !important;
+        padding: 16px 18px !important;
     }
-    div[data-testid="stMetricValue"] { color: #e4e4e7; }
-    div[data-testid="stMetricLabel"] { color: #a1a1aa; }
+    div[data-testid="stMetric"] label,
+    div[data-testid="stMetricLabel"],
+    div[data-testid="stMetricLabel"] p,
+    div[data-testid="stMetric"] [data-testid="stMetricLabel"] * {
+        color: #d4d4d8 !important;
+        opacity: 1 !important;
+    }
+    div[data-testid="stMetricValue"],
+    div[data-testid="stMetricValue"] div,
+    div[data-testid="stMetric"] [data-testid="stMetricValue"] * {
+        color: #f4f4f5 !important;
+        opacity: 1 !important;
+    }
     /* Tabs */
     .stTabs [data-baseweb="tab"] { color: #a1a1aa; }
     .stTabs [aria-selected="true"] { color: #e4e4e7 !important; }
+    /* Leads table safety-net: ensures any cell without an explicit inline
+       color still renders as visible light text on the dark background */
+    .ngtable td, .ngtable th { color: #d4d4d8; }
+    .ngtable a { color: #38bdf8; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -197,7 +212,7 @@ def render_leads_table(df):
 
         row = "<tr style=\"border-bottom:1px solid #27272a;\">"
         row += f'<td style="padding:10px;white-space:nowrap;">{score_badge}</td>'
-        row += f'<td style="padding:10px;min-width:160px;"><strong>{name}</strong><br><small style="color:#a1a1aa;">{rating} ★ · {reviews} reviews</small></td>'
+        row += f'<td style="padding:10px;min-width:160px;color:#e4e4e7;"><strong style="color:#f4f4f5;">{name}</strong><br><small style="color:#a1a1aa;">{rating} ★ · {reviews} reviews</small></td>'
         row += f'<td style="padding:10px;color:#d4d4d8;white-space:nowrap;">{category}</td>'
         row += f'<td style="padding:10px;color:#d4d4d8;white-space:nowrap;">{phone}</td>'
         row += f'<td style="padding:10px;min-width:200px;color:#a1a1aa;">{address}</td>'
@@ -210,8 +225,8 @@ def render_leads_table(df):
 
     header = '<tr style="background:#18181b;text-align:left;"><th style="padding:10px;color:#a1a1aa;font-size:12px;">SCORE</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">BUSINESS</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">CATEGORY</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">PHONE</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">ADDRESS</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">EMAIL</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">WEBSITE</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">ISSUES</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">ACTIONS</th></tr>'
 
-    table_html = '<div style="overflow-x:auto;border:1px solid #27272a;border-radius:10px;">'
-    table_html += '<table style="width:100%;border-collapse:collapse;min-width:950px;">'
+    table_html = '<div class="ngtable" style="overflow-x:auto;border:1px solid #27272a;border-radius:10px;">'
+    table_html += '<table style="width:100%;border-collapse:collapse;min-width:950px;color:#d4d4d8;">'
     table_html += f'<thead>{header}</thead>'
     table_html += f'<tbody>{"".join(rows_html)}</tbody>'
     table_html += '</table></div>'

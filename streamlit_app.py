@@ -199,7 +199,8 @@ def render_leads_table(df):
         row += f'<td style="padding:10px;white-space:nowrap;">{score_badge}</td>'
         row += f'<td style="padding:10px;min-width:160px;"><strong>{name}</strong><br><small style="color:#a1a1aa;">{rating} ★ · {reviews} reviews</small></td>'
         row += f'<td style="padding:10px;color:#d4d4d8;white-space:nowrap;">{category}</td>'
-        row += f'<td style="padding:10px;min-width:180px;color:#d4d4d8;">{phone}<br><small style="color:#a1a1aa;">{address}</small></td>'
+        row += f'<td style="padding:10px;color:#d4d4d8;white-space:nowrap;">{phone}</td>'
+        row += f'<td style="padding:10px;min-width:200px;color:#a1a1aa;">{address}</td>'
         row += f'<td style="padding:10px;white-space:nowrap;">{email_html}</td>'
         row += f'<td style="padding:10px;min-width:150px;word-break:break-all;">{website_html}</td>'
         row += f'<td style="padding:10px;min-width:180px;"><ul style="margin:0;padding-left:16px;">{issues_html}</ul></td>'
@@ -207,7 +208,7 @@ def render_leads_table(df):
         row += "</tr>"
         rows_html.append(row)
 
-    header = '<tr style="background:#18181b;text-align:left;"><th style="padding:10px;color:#a1a1aa;font-size:12px;">SCORE</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">BUSINESS</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">CATEGORY</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">CONTACT</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">EMAIL</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">WEBSITE</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">ISSUES</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">ACTIONS</th></tr>'
+    header = '<tr style="background:#18181b;text-align:left;"><th style="padding:10px;color:#a1a1aa;font-size:12px;">SCORE</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">BUSINESS</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">CATEGORY</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">PHONE</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">ADDRESS</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">EMAIL</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">WEBSITE</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">ISSUES</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">ACTIONS</th></tr>'
 
     table_html = '<div style="overflow-x:auto;border:1px solid #27272a;border-radius:10px;">'
     table_html += '<table style="width:100%;border-collapse:collapse;min-width:950px;">'

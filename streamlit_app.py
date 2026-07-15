@@ -208,25 +208,38 @@ def render_leads_table(df):
         maps_url = html_lib.escape(str(maps_url_raw)) if pd.notna(maps_url_raw) else "#"
         maps_html = f'<a href="{maps_url}" target="_blank" rel="noopener noreferrer" style="color:#a78bfa;text-decoration:none;">📍 Maps</a>'
 
-        score_badge = f'<div style="width:34px;height:34px;border-radius:50%;background:{color}22;border:2px solid {color};display:flex;align-items:center;justify-content:center;font-weight:700;color:{color};font-size:12px;">{score}</div>'
+        score_badge = f'<div style="width:30px;height:30px;border-radius:50%;background:{color}22;border:2px solid {color};display:flex;align-items:center;justify-content:center;font-weight:700;color:{color};font-size:11px;">{score}</div>'
+
+        cellstyle = 'padding:8px;word-wrap:break-word;overflow-wrap:break-word;vertical-align:top;font-size:13px;'
 
         row = "<tr style=\"border-bottom:1px solid #27272a;\">"
-        row += f'<td style="padding:10px;white-space:nowrap;">{score_badge}</td>'
-        row += f'<td style="padding:10px;min-width:160px;color:#e4e4e7;"><strong style="color:#f4f4f5;">{name}</strong><br><small style="color:#a1a1aa;">{rating} ★ · {reviews} reviews</small></td>'
-        row += f'<td style="padding:10px;color:#d4d4d8;white-space:nowrap;">{category}</td>'
-        row += f'<td style="padding:10px;color:#d4d4d8;white-space:nowrap;">{phone}</td>'
-        row += f'<td style="padding:10px;min-width:200px;color:#a1a1aa;">{address}</td>'
-        row += f'<td style="padding:10px;white-space:nowrap;">{email_html}</td>'
-        row += f'<td style="padding:10px;min-width:150px;word-break:break-all;">{website_html}</td>'
-        row += f'<td style="padding:10px;min-width:180px;"><ul style="margin:0;padding-left:16px;">{issues_html}</ul></td>'
-        row += f'<td style="padding:10px;white-space:nowrap;">{maps_html}</td>'
+        row += f'<td style="{cellstyle}">{score_badge}</td>'
+        row += f'<td style="{cellstyle}color:#e4e4e7;"><strong style="color:#f4f4f5;">{name}</strong><br><small style="color:#a1a1aa;">{rating} ★ · {reviews} reviews</small></td>'
+        row += f'<td style="{cellstyle}color:#d4d4d8;">{category}</td>'
+        row += f'<td style="{cellstyle}color:#d4d4d8;">{phone}</td>'
+        row += f'<td style="{cellstyle}color:#a1a1aa;">{address}</td>'
+        row += f'<td style="{cellstyle}">{email_html}</td>'
+        row += f'<td style="{cellstyle}">{website_html}</td>'
+        row += f'<td style="{cellstyle}"><ul style="margin:0;padding-left:14px;">{issues_html}</ul></td>'
+        row += f'<td style="{cellstyle}">{maps_html}</td>'
         row += "</tr>"
         rows_html.append(row)
 
-    header = '<tr style="background:#18181b;text-align:left;"><th style="padding:10px;color:#a1a1aa;font-size:12px;">SCORE</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">BUSINESS</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">CATEGORY</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">PHONE</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">ADDRESS</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">EMAIL</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">WEBSITE</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">ISSUES</th><th style="padding:10px;color:#a1a1aa;font-size:12px;">ACTIONS</th></tr>'
+    header = '<tr style="background:#18181b;text-align:left;"><th style="padding:8px;color:#a1a1aa;font-size:11px;">SCORE</th><th style="padding:8px;color:#a1a1aa;font-size:11px;">BUSINESS</th><th style="padding:8px;color:#a1a1aa;font-size:11px;">CATEGORY</th><th style="padding:8px;color:#a1a1aa;font-size:11px;">PHONE</th><th style="padding:8px;color:#a1a1aa;font-size:11px;">ADDRESS</th><th style="padding:8px;color:#a1a1aa;font-size:11px;">EMAIL</th><th style="padding:8px;color:#a1a1aa;font-size:11px;">WEBSITE</th><th style="padding:8px;color:#a1a1aa;font-size:11px;">ISSUES</th><th style="padding:8px;color:#a1a1aa;font-size:11px;">ACTIONS</th></tr>'
 
     table_html = '<div class="ngtable" style="overflow-x:auto;border:1px solid #27272a;border-radius:10px;">'
-    table_html += '<table style="width:100%;border-collapse:collapse;min-width:950px;color:#d4d4d8;">'
+    table_html += '<table style="width:100%;table-layout:fixed;border-collapse:collapse;color:#d4d4d8;">'
+    table_html += '<colgroup>'
+    table_html += '<col style="width:6%">'
+    table_html += '<col style="width:14%">'
+    table_html += '<col style="width:10%">'
+    table_html += '<col style="width:10%">'
+    table_html += '<col style="width:18%">'
+    table_html += '<col style="width:12%">'
+    table_html += '<col style="width:12%">'
+    table_html += '<col style="width:12%">'
+    table_html += '<col style="width:6%">'
+    table_html += '</colgroup>'
     table_html += f'<thead>{header}</thead>'
     table_html += f'<tbody>{"".join(rows_html)}</tbody>'
     table_html += '</table></div>'

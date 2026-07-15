@@ -62,50 +62,50 @@ tailwind.config = {
   html {
     scroll-behavior: smooth;
   }
-
- .gradient-bg {
+  
+  .gradient-bg {
     background: linear-gradient(135deg, #0a0e1a 0%, #111827 50%, #1f2937 100%);
   }
-
- .gradient-text {
+  
+  .gradient-text {
     background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-
- .glass-card {
+  
+  .glass-card {
     background: rgba(31, 41, 55, 0.6);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(75, 85, 99, 0.3);
   }
-
- .grid-pattern {
+  
+  .grid-pattern {
     background-image: radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.15) 1px, transparent 0);
     background-size: 40px 40px;
   }
-
- .hero-glow {
+  
+  .hero-glow {
     background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
   }
-
- .card-hover {
+  
+  .card-hover {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-
- .card-hover:hover {
+  
+  .card-hover:hover {
     transform: translateY(-4px);
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 0 20px rgba(59, 130, 246, 0.1);
     border-color: rgba(59, 130, 246, 0.5);
   }
-
- .chart-bar {
+  
+  .chart-bar {
     transition: height 1.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 </style>
 </head>
 <body class="gradient-bg text-gray-100 font-sans antialiased">
-
+  
   <!-- Nav -->
   <nav class="fixed w-full z-50 glass-card border-b border-dark-600/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -116,14 +116,14 @@ tailwind.config = {
           </div>
           <span class="text-xl font-bold">NextGen<span class="gradient-text">Leads</span></span>
         </div>
-
+        
         <div class="hidden md:flex items-center gap-8">
           <a href="#features" class="text-gray-300 hover:text-accent-400 transition-colors">Features</a>
           <a href="#how-it-works" class="text-gray-300 hover:text-accent-400 transition-colors">How It Works</a>
           <a href="#stats" class="text-gray-300 hover:text-accent-400 transition-colors">Stats</a>
           <a href="#tech" class="text-gray-300 hover:text-accent-400 transition-colors">Tech Stack</a>
         </div>
-
+        
         <div class="flex items-center gap-3">
           <a href="https://github.com" target="_blank" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg border border-dark-600 hover:border-accent-500 hover:bg-dark-800 transition-all">
             <i data-lucide="github" class="w-4 h-4"></i>
@@ -141,23 +141,23 @@ tailwind.config = {
   <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
     <div class="absolute inset-0 grid-pattern opacity-50"></div>
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w- h- hero-glow rounded-full blur-3xl"></div>
-
+    
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center animate-fadeInUp">
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-accent-500/30 mb-6">
           <span class="w-2 h-2 bg-accent-500 rounded-full animate-pulse-slow"></span>
           <span class="text-sm text-accent-400">AI-Powered Google Maps Scraping</span>
         </div>
-
+        
         <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
           NextGen Lead Generator<br>
           <span class="gradient-text">Find High-Intent Clients on Google Maps</span>
         </h1>
-
+        
         <p class="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed">
           Automatically discover businesses that urgently need web development services. Smart filtering, lead scoring, and instant contact extraction to fill your pipeline with Hot prospects.
         </p>
-
+        
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
           <a href="https://nextgen-lead-generator-nxp2zwykt8btyyvsutv42a.streamlit.app/" target="_blank" class="group px-8 py-4 bg-accent-600 hover:bg-accent-700 rounded-xl font-semibold text-white transition-all hover:shadow-xl hover:shadow-accent-500/30 hover:scale-105 flex items-center gap-2 w-full sm:w-auto">
             <i data-lucide="play" class="w-5 h-5"></i>
@@ -169,7 +169,7 @@ tailwind.config = {
             View on GitHub
           </a>
         </div>
-
+        
         <!-- Hero Stats Preview -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
           <div class="glass-card rounded-xl p-6 card-hover">
@@ -223,7 +223,7 @@ tailwind.config = {
             </div>
           </div>
         </div>
-
+        
         <!-- Solution -->
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-500/10 border border-accent-500/30 mb-4">
@@ -262,7 +262,7 @@ tailwind.config = {
         <h2 class="text-3xl lg:text-5xl font-bold mb-4">Everything You Need To <span class="gradient-text">Close More Deals</span></h2>
         <p class="text-gray-400 text-lg max-w-2xl mx-auto">Built for agencies and freelancers who want to automate lead generation without sacrificing quality.</p>
       </div>
-
+      
       <!-- Features Table -->
       <div class="glass-card rounded-2xl overflow-hidden border border-dark-600">
         <div class="overflow-x-auto">
@@ -349,7 +349,7 @@ tailwind.config = {
         <h2 class="text-3xl lg:text-5xl font-bold mb-4">How It Works</h2>
         <p class="text-gray-400 text-lg">From search to sale-ready leads in 3 simple steps</p>
       </div>
-
+      
       <div class="grid md:grid-cols-3 gap-8">
         <div class="glass-card rounded-2xl p-8 card-hover relative">
           <div class="absolute -top-4 -left-4 w-12 h-12 bg-accent-600 rounded-xl flex items-center justify-center font-bold text-xl">1</div>
@@ -359,7 +359,7 @@ tailwind.config = {
           <h3 class="text-xl font-bold mb-3">Define Your Target</h3>
           <p class="text-gray-400">Enter your niche, location, and filters. Example: "Restaurants in Miami with &lt;4.5 stars and no website"</p>
         </div>
-
+        
         <div class="glass-card rounded-2xl p-8 card-hover relative">
           <div class="absolute -top-4 -left-4 w-12 h-12 bg-accent-600 rounded-xl flex items-center justify-center font-bold text-xl">2</div>
           <div class="w-14 h-14 bg-accent-500/20 rounded-xl flex items-center justify-center mb-6">
@@ -368,7 +368,7 @@ tailwind.config = {
           <h3 class="text-xl font-bold mb-3">AI Scrapes & Analyzes</h3>
           <p class="text-gray-400">Playwright scrapes Google Maps while our AI scores each business and extracts contact info automatically.</p>
         </div>
-
+        
         <div class="glass-card rounded-2xl p-8 card-hover relative">
           <div class="absolute -top-4 -left-4 w-12 h-12 bg-accent-600 rounded-xl flex items-center justify-center font-bold text-xl">3</div>
           <div class="w-14 h-14 bg-accent-500/20 rounded-xl flex items-center justify-center mb-6">
@@ -389,7 +389,7 @@ tailwind.config = {
         <h2 class="text-3xl lg:text-5xl font-bold mb-4">Real Results From <span class="gradient-text">Live Campaign</span></h2>
         <p class="text-gray-400 text-lg">Sample data from "Plumbers in Austin, TX" search</p>
       </div>
-
+      
       <div class="glass-card rounded-2xl p-8 lg:p-12">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <!-- Chart -->
@@ -405,7 +405,7 @@ tailwind.config = {
                   <div class="chart-bar h-full bg-gradient-to-r from-red-500 to-red-400 rounded-full" data-height="78%"></div>
                 </div>
               </div>
-
+              
               <div>
                 <div class="flex justify-between mb-2">
                   <span class="text-sm font-medium text-yellow-400">Warm Leads</span>
@@ -415,7 +415,7 @@ tailwind.config = {
                   <div class="chart-bar h-full bg-gradient-to-r from-yellow-500 to-yellow-400 rounded-full" data-height="9%"></div>
                 </div>
               </div>
-
+              
               <div>
                 <div class="flex justify-between mb-2">
                   <span class="text-sm font-medium text-gray-500">Low Priority</span>
@@ -426,7 +426,7 @@ tailwind.config = {
                 </div>
               </div>
             </div>
-
+            
             <div class="mt-8 p-4 bg-accent-500/10 border border-accent-500/30 rounded-xl">
               <div class="flex items-start gap-3">
                 <i data-lucide="trending-up" class="w-5 h-5 text-accent-400 flex-shrink-0 mt-0.5"></i>
@@ -437,7 +437,7 @@ tailwind.config = {
               </div>
             </div>
           </div>
-
+          
           <!-- Key Metrics -->
           <div class="grid grid-cols-2 gap-4">
             <div class="glass-card rounded-xl p-6 text-center">
@@ -473,7 +473,7 @@ tailwind.config = {
         <h2 class="text-3xl lg:text-5xl font-bold mb-4">Built With <span class="gradient-text">Modern Tech</span></h2>
         <p class="text-gray-400 text-lg">Reliable, scalable, and fast. Open-source core.</p>
       </div>
-
+      
       <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <div class="glass-card rounded-2xl p-8 text-center card-hover">
           <div class="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -482,7 +482,7 @@ tailwind.config = {
           <h3 class="font-bold text-lg mb-2">Python</h3>
           <p class="text-sm text-gray-400">Core scraping engine & data processing</p>
         </div>
-
+        
         <div class="glass-card rounded-2xl p-8 text-center card-hover">
           <div class="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <i data-lucide="bot" class="w-8 h-8 text-green-400"></i>
@@ -490,7 +490,7 @@ tailwind.config = {
           <h3 class="font-bold text-lg mb-2">Playwright</h3>
           <p class="text-sm text-gray-400">Headless browser automation</p>
         </div>
-
+        
         <div class="glass-card rounded-2xl p-8 text-center card-hover">
           <div class="w-16 h-16 bg-red-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <i data-lucide="flask-conical" class="w-8 h-8 text-red-400"></i>
@@ -498,7 +498,7 @@ tailwind.config = {
           <h3 class="font-bold text-lg mb-2">Flask</h3>
           <p class="text-sm text-gray-400">Web UI & API backend</p>
         </div>
-
+        
         <div class="glass-card rounded-2xl p-8 text-center card-hover">
           <div class="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <i data-lucide="table" class="w-8 h-8 text-purple-400"></i>
@@ -506,7 +506,7 @@ tailwind.config = {
           <h3 class="font-bold text-lg mb-2">Pandas</h3>
           <p class="text-sm text-gray-400">Data analysis & CSV export</p>
         </div>
-
+        
         <div class="glass-card rounded-2xl p-8 text-center card-hover">
           <div class="w-16 h-16 bg-accent-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <i data-lucide="map-pin" class="w-8 h-8 text-accent-400"></i>
@@ -524,7 +524,7 @@ tailwind.config = {
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2 class="text-3xl lg:text-5xl font-bold mb-6">Stop Hunting. Start <span class="gradient-text">Closing</span>.</h2>
       <p class="text-xl text-gray-400 mb-10">Get your first 100 Hot leads in under 5 minutes. Free, open-source, and ready to deploy.</p>
-
+      
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
         <a href="https://github.com" target="_blank" class="group px-8 py-4 bg-accent-600 hover:bg-accent-700 rounded-xl font-semibold text-white transition-all hover:shadow-xl hover:shadow-accent-500/30 hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center">
           <i data-lucide="github" class="w-5 h-5"></i>
@@ -536,7 +536,7 @@ tailwind.config = {
           Watch Demo Video
         </a>
       </div>
-
+      
       <div class="flex items-center justify-center gap-6 text-sm text-gray-500">
         <div class="flex items-center gap-2">
           <i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i>
@@ -560,7 +560,7 @@ tailwind.config = {
           </div>
           <span class="text-lg font-bold">NextGen<span class="gradient-text">Leads</span></span>
         </div>
-
+        
         <div class="flex items-center gap-6">
           <a href="https://github.com" target="_blank" class="text-gray-400 hover:text-accent-400 transition-colors">
             <i data-lucide="github" class="w-5 h-5"></i>
@@ -569,4 +569,8 @@ tailwind.config = {
             <i data-lucide="twitter" class="w-5 h-5"></i>
           </a>
           <a href="#" class="text-gray-400 hover:text-accent-400 transition-colors">
-            <i data-lucide="linkedin" class="w-5 h
+            <i data-lucide="linkedin" class="w-5 h-5"></i>
+          </a>
+        </div>
+        
+        <p class="text-sm text-gray-500">© 2024 NextGen Lead Generator

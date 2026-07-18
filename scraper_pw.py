@@ -3,15 +3,12 @@
 import os
 import random
 import re
-
 from playwright.sync_api import Error as PlaywrightError, sync_playwright
-
 import config
 
 def _accept_cookies(page):
     """Try to dismiss the Google consent/cookie banner if present."""
     try:
-        # Try multiple consent button patterns
         for selector in [
             "button:has-text('Accept all')",
             "button:has-text('I agree')",
@@ -29,16 +26,6 @@ def _accept_cookies(page):
         pass
 
 def _collect_listing_urls(page, max_results, progress_callback=None):
-    """
-    Scroll the results panel and collect each listing's place URL.
-
-    We deliberately collect URLs first (instead of clicking each card in
-    place) because Google Maps' results list is virtualized: clicking a
-    card and pressing "Back" resets the panel's scroll position, which
-    detaches any cards loaded by earlier scrolling. Collecting URLs up
-    front and then visiting each one directly with page.goto() sidesteps
-    that entirely.
-    """
     feed = page.locator('div[role="feed"]')
     if feed.count() == 0:
         return []
@@ -56,7 +43,6 @@ def _collect_listing_urls(page, max_results, progress_callback=None):
                 ordered_urls.append(href)
 
     _collect_current()
-
     last_height = 0
     retries = 0
     max_stall_retries = config.SCROLL_MAX_STALL_RETRIES
@@ -65,18 +51,11 @@ def _collect_listing_urls(page, max_results, progress_callback=None):
         feed.evaluate("el => el.scrollTo(0, el.scrollHeight)")
         page.wait_for_timeout(int(config.SCROLL_PAUSE_TIME * 1000))
         _collect_current()
-
         if progress_callback:
-            progress_callback(
-                0, max_results, f"Found {len(ordered_urls)} listings so far..."
-            )
-
-        # Google shows a "You've reached the end of the list" marker when
-        # there are truly no more results to load.
+            progress_callback(0, max_results, f"Found {len(ordered_urls)} listings so far...")
         end_marker = page.locator("text=You've reached the end of the list")
         if end_marker.count() > 0:
             break
-
         new_height = feed.evaluate("el => el.scrollHeight")
         if new_height == last_height:
             retries += 1
@@ -89,24 +68,18 @@ def _collect_listing_urls(page, max_results, progress_callback=None):
 def _extract_detail(page):
     """Extract business details from the detail panel."""
     info = {}
-
-    # Name
     name_el = page.locator("h1.DUwDvf")
     if name_el.count() == 0:
         name_el = page.locator('div[role="main"] h1')
     info["name"] = name_el.first.inner_text().strip() if name_el.count() > 0 else "Unknown"
 
-    # Rating + Reviews - FIXED WITH PROPER INDENTATION
     rating = "N/A"
     reviews = 0
-    
-    # Try multiple selectors for rating
     rating_selectors = [
         'div.F7nice span[aria-hidden="true"]',
         'span[aria-label*="stars"]',
         'div[jsaction*="pane.rating"] span:first-child'
     ]
-    
     for sel in rating_selectors:
         rating_el = page.locator(sel)
         if rating_el.count() > 0:
@@ -115,19 +88,16 @@ def _extract_detail(page):
                 rating = rating_text
                 break
     
-    # Reviews - multiple selectors + regex extraction
     reviews_selectors = [
         'div.F7nice span[aria-label*="reviews"]',
         'div.F7nice span span',
         'button[jsaction*="pane.rating"] span'
     ]
-    
     for sel in reviews_selectors:
         reviews_el = page.locator(sel)
         if reviews_el.count() > 0:
             for i in range(reviews_el.count()):
                 text = reviews_el.nth(i).inner_text().strip()
-                # Extract number from text like "(123)" or "123 reviews" or "1,234"
                 num_match = re.search(r'(\d[\d,]*)', text)
                 if num_match:
                     try:
@@ -140,40 +110,18 @@ def _extract_detail(page):
     
     info["rating"] = rating
     info["reviews"] = reviews
-
-    # Category / type
     cat_el = page.locator("button.DkEaL")
     info["category"] = cat_el.inner_text().strip() if cat_el.count() > 0 else "N/A"
-
-    # Address
     addr_el = page.locator('button[data-item-id="address"] div.Io6YTe')
     info["address"] = addr_el.inner_text().strip() if addr_el.count() > 0 else "N/A"
-
-    # Phone
     phone_el = page.locator('button[data-item-id^="phone:"] div.Io6YTe')
     info["phone"] = phone_el.inner_text().strip() if phone_el.count() > 0 else "N/A"
-
-    # Website
     website_el = page.locator('a[data-item-id="authority"] div.Io6YTe')
     info["website"] = website_el.inner_text().strip() if website_el.count() > 0 else None
-
-    # Google Maps URL
     info["maps_url"] = page.url
-
     return info
 
 def _should_force_headless():
-    """
-    Decide whether we must run headless regardless of config.HEADLESS.
-
-    Any cloud host (Streamlit Cloud, HuggingFace Spaces, Vercel, etc.) is a
-    Linux server with no real screen — trying to launch a headed browser
-    there fails with "Missing X server or $DISPLAY". We only want headed
-    mode on a real local desktop (e.g. your Windows laptop), so: force
-    headless whenever we're on Linux and there's no DISPLAY set. Windows
-    never sets $DISPLAY either, but os.name is "nt" there, so this check
-    correctly leaves local Windows runs alone.
-    """
     if os.environ.get("VERCEL") or os.environ.get("SPACE_ID") or os.environ.get("STREAMLIT_RUNTIME_ENV"):
         return True
     if os.name != "nt" and not os.environ.get("DISPLAY"):
@@ -181,19 +129,16 @@ def _should_force_headless():
     return False
 
 def _launch_browser(pw):
-    """Launch Chromium and provide a useful setup error if browsers are missing."""
+    """Upgraded - Single and stable version for Streamlit Cloud"""
     launch_args = [
         "--no-sandbox",
         "--disable-dev-shm-usage",
-        "--disable-gpu",
         "--disable-setuid-sandbox",
+        "--disable-gpu",
     ]
-    headless = True if _should_force_headless() else config.HEADLESS
+    headless = True if _should_force_headless() else getattr(config, 'HEADLESS', True)
     try:
-        return pw.chromium.launch(
-            headless=headless,
-            args=launch_args,
-        )
+        return pw.chromium.launch(headless=headless, args=launch_args)
     except PlaywrightError as exc:
         message = str(exc)
         if "Executable doesn't exist" in message:
@@ -203,25 +148,11 @@ def _launch_browser(pw):
         raise
 
 def scrape_google_maps(query, max_results=None, progress_callback=None):
-    """
-    Scrape Google Maps for business listings.
-
-    Args:
-        query: Search query, e.g. "restaurants in New York"
-        max_results: Maximum number of results to return
-        progress_callback: Optional callable(current, total, message)
-
-    Returns:
-        List of dicts with business info.
-    """
     if max_results is None:
         max_results = config.MAX_RESULTS_PER_SEARCH
-
     results = []
-
     if progress_callback:
         progress_callback(0, max_results, "Starting browser...")
-
     with sync_playwright() as pw:
         browser = _launch_browser(pw)
         context = browser.new_context(
@@ -234,31 +165,16 @@ def scrape_google_maps(query, max_results=None, progress_callback=None):
             ),
         )
         page = context.new_page()
-
         try:
-            # Navigate to Google Maps
             page.goto("https://www.google.com/maps", wait_until="load", timeout=60000)
             page.wait_for_timeout(3000)
-
-            if config.DEBUG_SCREENSHOTS:
-                page.screenshot(path="debug_page.png")
-
             _accept_cookies(page)
             page.wait_for_timeout(2000)
-
-            # After consent, we may need to navigate again
             if "consent" in page.url.lower() or "sorry" in page.url.lower():
                 page.goto("https://www.google.com/maps", wait_until="load", timeout=60000)
                 page.wait_for_timeout(3000)
-
-            if config.DEBUG_SCREENSHOTS:
-                page.screenshot(path="debug_after_consent.png")
-
-            # Type search query
             if progress_callback:
                 progress_callback(0, max_results, f"Searching: {query}")
-
-            # Wait for search box with longer timeout — try multiple selectors
             search_box = page.locator("#searchboxinput")
             if search_box.count() == 0 or not search_box.is_visible():
                 search_box = page.locator('input[name="q"]')
@@ -268,24 +184,13 @@ def scrape_google_maps(query, max_results=None, progress_callback=None):
             search_box.fill(query)
             page.keyboard.press("Enter")
             page.wait_for_timeout(3000)
-
-            # Give the results panel a bit more time and retry the search
-            # once if it never shows up — this usually means Google served
-            # a CAPTCHA / "unusual traffic" page instead of real results
-            # (commonly triggered after a burst of rapid automated requests).
             feed = page.locator('div[role="feed"]')
             if feed.count() == 0:
                 page.wait_for_timeout(3000)
                 feed = page.locator('div[role="feed"]')
-
             if feed.count() == 0:
-                if config.DEBUG_SCREENSHOTS:
-                    page.screenshot(path=os.path.join(config.SCREENSHOT_DIR, "no_results_panel.png"))
                 if progress_callback:
-                    progress_callback(
-                        0, max_results,
-                        "No results panel found (Google may be rate-limiting) — retrying once...",
-                    )
+                    progress_callback(0, max_results, "No results panel found - retrying once...")
                 page.goto("https://www.google.com/maps", wait_until="load", timeout=60000)
                 page.wait_for_timeout(3000)
                 search_box = page.locator("#searchboxinput")
@@ -295,58 +200,33 @@ def scrape_google_maps(query, max_results=None, progress_callback=None):
                 page.wait_for_timeout(4000)
                 feed = page.locator('div[role="feed"]')
                 if feed.count() == 0:
-                    if config.DEBUG_SCREENSHOTS:
-                        page.screenshot(path=os.path.join(config.SCREENSHOT_DIR, "no_results_panel_retry.png"))
-                    raise RuntimeError(
-                        "Google did not return a normal results list after retrying. "
-                        "This usually means Google is temporarily rate-limiting this "
-                        "connection — wait a few minutes and try again."
-                    )
-
-            # Scroll to load & collect every listing's URL
+                    raise RuntimeError("Google is rate-limiting - wait a few minutes and try again.")
             if progress_callback:
                 progress_callback(0, max_results, "Loading results...")
-
             listing_urls = _collect_listing_urls(page, max_results, progress_callback)
             total = len(listing_urls)
-
             if progress_callback:
                 progress_callback(0, total, f"Found {total} listings. Extracting details...")
-
-            # Visit each listing directly by URL — no click+back navigation,
-            # so nothing depends on the results panel's scroll state.
             for idx, url in enumerate(listing_urls):
                 try:
                     page.goto(url, wait_until="load", timeout=30000)
                     page.wait_for_timeout(1500 + random.randint(0, 800))
-
                     info = _extract_detail(page)
-
-                    # If the name didn't come through, the page probably
-                    # hadn't finished rendering yet — give it one more
-                    # chance before accepting an incomplete record.
                     if info.get("name") in (None, "Unknown"):
                         page.wait_for_timeout(1500)
                         info = _extract_detail(page)
-
                     info["search_query"] = query
                     results.append(info)
-
                     if progress_callback:
-                        progress_callback(
-                            idx + 1, total, f"Extracted: {info.get('name', '?')}"
-                        )
-
+                        progress_callback(idx + 1, total, f"Extracted: {info.get('name', '?')}")
                 except Exception as exc:
                     if progress_callback:
                         progress_callback(idx + 1, total, f"Skipped item {idx + 1}: {exc}")
                     continue
-
         except Exception as exc:
             if progress_callback:
                 progress_callback(0, 0, f"Error: {exc}")
             raise
         finally:
             browser.close()
-
     return results

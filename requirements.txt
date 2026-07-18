@@ -1,6 +1,7 @@
-flask>=3.0
-requests>=2.31
-beautifulsoup4>=4.12
-playwright>=1.43
-streamlit>=1.35
-pandas>=2.0
+flask>=3.1.1
+requests>=2.32.3
+beautifulsoup4>=4.13.3
+playwright>=1.52.0
+streamlit>=1.41.1
+pandas>=2.2.3
+openpyxl>=3.1.5

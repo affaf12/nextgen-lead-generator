@@ -20,8 +20,7 @@
 <link rel="dns-prefetch" href="https://unpkg.com">
 
 <!-- PRELOAD LCP -->
-<link rel="preload" as="image" href="/og-image.webp" fetchpriority="high" type="image/webp">
-<link rel="preload" as="image" href="/og-image-tinyjpeg.jpg" fetchpriority="high" type="image/jpeg">
+<link rel="preload" as="image" href="https://nextgen-lead-generator.vercel.app/og-image.png" fetchpriority="high">
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"></noscript>
 
@@ -30,7 +29,7 @@
 <meta property="og:url" content="https://nextgen-lead-generator.vercel.app/">
 <meta property="og:title" content="NextGen Lead Generator | Find High-Intent Clients on Google Maps">
 <meta property="og:description" content="AI-powered Google Maps scraper for agencies. Find Web Dev + Marketing + Power BI clients in 3 mins. 195 countries, 70% hot lead rate.">
-<meta property="og:image" content="https://nextgen-lead-generator.vercel.app/og-image.webp">
+<meta property="og:image" content="https://nextgen-lead-generator.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="NextGen Leads">
@@ -41,7 +40,7 @@
 <meta name="twitter:url" content="https://nextgen-lead-generator.vercel.app/">
 <meta name="twitter:title" content="NextGen Lead Generator | Google Maps Scraper for Agencies">
 <meta name="twitter:description" content="Find Web Dev, Marketing & Power BI clients on Google Maps. AI scoring, contact extraction, 195 countries.">
-<meta name="twitter:image" content="https://nextgen-lead-generator.vercel.app/og-image.webp">
+<meta name="twitter:image" content="https://nextgen-lead-generator.vercel.app/og-image.png">
 <meta name="twitter:creator" content="@nextgenleads">
 
 <!-- FAVICONS -->
@@ -90,15 +89,9 @@ tailwind_config = {
 if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.tailwind_config=tailwind_config}
 </script>
 
-<!-- TAILWIND & LUCIDE REMOVED FOR CLS 0 - Using inline CSS + SVG -->
-<style>
-/* Prevent CLS from icons */
-[data-lucide]{width:20px;height:20px;display:inline-block;contain:size layout}
-.glass-card{contain:layout style}
-img{aspect-ratio:attr(width)/attr(height)}
-/* Reserve space for hero */
-.hero-stats{min-height:120px}
-</style>
+<!-- TAILWIND & LUCIDE - DEFERRED FOR 100 SCORE -->
+<script src="https://cdn.tailwindcss.com" defer></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
 
 <!-- JSON-LD - Not render-blocking -->
 <script type="application/ld+json">
@@ -143,8 +136,6 @@ img{aspect-ratio:attr(width)/attr(height)}
   ]
 }
 </script>
-<link rel="alternate" type="text/markdown" href="/llms.txt" title="LLMs.txt for AI agents">
-<link rel="alternate" type="text/markdown" href="/llms-full.txt" title="Full docs">
 </head>
 <body class="gradient-bg text-gray-100 font-sans antialiased">
 
@@ -393,19 +384,33 @@ img{aspect-ratio:attr(width)/attr(height)}
   </footer>
 
 <script>
-// CLS 0 fix - No forced reflow, passive listeners
-document.addEventListener('DOMContentLoaded', function(){
-  // Smooth scroll with passive, no layout thrashing
-  document.querySelectorAll('a[href^="#"]').forEach(function(a){
-    a.addEventListener('click', function(e){
-      var href = this.getAttribute('href');
-      if(href.length > 1){
-        var t = document.querySelector(href);
-        if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
-      }
-    }, {passive:false});
+// Optimized init - fixes Forced Reflow
+function initApp(){
+  if(window.lucide){
+    requestAnimationFrame(function(){
+      lucide.createIcons();
+    });
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor){
+    anchor.addEventListener('click', function(e){
+      e.preventDefault();
+      var target=document.querySelector(this.getAttribute('href'));
+      if(target){target.scrollIntoView({behavior:'smooth',block:'start'});}
+    });
   });
-}, {once:true});
+  if(typeof tailwind!=='undefined' && window.tailwind_config){
+    tailwind.config=window.tailwind_config;
+  }
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', initApp);
+}else{
+  initApp();
+}
+// Defer non-critical after load
+window.addEventListener('load', function(){
+  setTimeout(initApp, 100);
+});
 </script>
 </body>
 </html>

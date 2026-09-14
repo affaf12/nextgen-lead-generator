@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://nextgenanalytics.cloud-ip.cc/sitemap.xml
+Sitemap: https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/sitemap.xml
+
+# Allow important paths
+Allow: /nextgen-lead-generator/
+Allow: /nextgen-lead-generator/*
+
+# Disallow private / admin
+Disallow: /admin/
+Disallow: /*?utm_*
+Disallow: /*?fbclid*
+Disallow: /*?gclid*
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Host (for Yandex)
+Host: https://nextgenanalytics.cloud-ip.cc

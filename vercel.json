@@ -4,7 +4,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "installCommand": "uv pip install --system -r requirements.txt && PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers /usr/bin/python3 -m playwright install chromium --only-shell",
-  "buildCommand": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers /usr/bin/python3 -m playwright install chromium --only-shell && mkdir -p public && cp -v og-image.* llms.txt llms-full.txt robots.txt sitemap.xml humans.txt ai.txt creator.json 2>/dev/null; ls -lh public/ && echo ok > public/.keep",
+  "buildCommand": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers /usr/bin/python3 -m playwright install chromium --only-shell && mkdir -p public && cp -v og-image.* styles.css llms.txt llms-full.txt robots.txt sitemap.xml humans.txt ai.txt creator.json 2>/dev/null; ls -lh public/ && echo ok > public/.keep",
   "env": {
     "PLAYWRIGHT_BROWSERS_PATH": ".playwright-browsers"
   },
@@ -68,7 +68,7 @@
   ],
   "rewrites": [
     {
-      "source": "/(og-image.webp|og-image.jpg|og-image.jpeg|og-image.png|llms.txt|llms-full.txt|robots.txt|sitemap.xml|humans.txt|ai.txt|creator.json)",
+      "source": "/(og-image.webp|og-image.jpg|og-image.jpeg|og-image.png|styles.css|llms.txt|llms-full.txt|robots.txt|sitemap.xml|humans.txt|ai.txt|creator.json)",
       "destination": "/$1"
     },
     {

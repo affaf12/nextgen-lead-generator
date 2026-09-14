@@ -21,8 +21,8 @@
 <!-- NOTE: og-image.webp is only used for social-share meta tags below (og:image / twitter:image) —
      it is never rendered on the page, so it must NOT be preloaded (that was competing for
      bandwidth with the actual LCP content on mobile). -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"></noscript>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=optional" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=optional"></noscript>
 
 <!-- OPEN GRAPH / FACEBOOK -->
 <meta property="og:type" content="website">
@@ -65,7 +65,7 @@
 </style>
 
 <!-- LUCIDE ICONS ONLY - Tailwind is precompiled and inlined above (no runtime JIT, no extra CSS request = no forced reflow, no render-blocking request) -->
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+<script src="https://unpkg.com/lucide@0.525.0/dist/umd/lucide.min.js" defer></script>
 
 <!-- JSON-LD - Not render-blocking -->
 <script type="application/ld+json">

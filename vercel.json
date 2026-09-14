@@ -1,8 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
+  "cleanUrls": true,
+  "trailingSlash": false,
   "installCommand": "uv pip install --system -r requirements.txt && PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers /usr/bin/python3 -m playwright install chromium --only-shell",
-  "buildCommand": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers /usr/bin/python3 -m playwright install chromium --only-shell && mkdir -p public && echo ok > public/.keep",
+  "buildCommand": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers /usr/bin/python3 -m playwright install chromium --only-shell && mkdir -p public && cp -r og-image.* llms.txt llms-full.txt robots.txt sitemap.xml humans.txt ai.txt creator.json public/ 2>/dev/null || true && echo ok > public/.keep",
   "env": {
     "PLAYWRIGHT_BROWSERS_PATH": ".playwright-browsers"
   },
@@ -13,6 +15,60 @@
       "excludeFiles": "{__pycache__/**,debug_*.png,test_*.py,*.log}"
     }
   },
+  "headers": [
+    {
+      "source": "/og-image.(webp|jpg|jpeg|png)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Content-Type",
+          "value": "image/webp"
+        }
+      ]
+    },
+    {
+      "source": "/(.*).(webp|jpg|jpeg|png|svg|ico|css|js|woff|woff2|ttf)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(llms.txt|llms-full.txt|robots.txt|sitemap.xml|humans.txt|ai.txt|creator.json)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, must-revalidate"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

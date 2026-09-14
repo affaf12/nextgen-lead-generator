@@ -16,7 +16,6 @@
 <!-- PRECONNECT - Keep but optimized -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
 <link rel="dns-prefetch" href="https://unpkg.com">
 
 <!-- PRELOAD LCP -->
@@ -58,39 +57,11 @@
   .card-hover{transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
   .card-hover:hover{transform:translateY(-4px);box-shadow:0 20px 25px -5px rgba(0,0,0,0.3),0 0 20px rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.5)}
   .chart-bar{transition:height 1.5s cubic-bezier(0.4,0,0.2,1)}
+  [data-lucide]{display:inline-block;vertical-align:middle}
 </style>
+<link rel="stylesheet" href="styles.css">
 
-<!-- TAILWIND CONFIG MUST BE BEFORE CDN -->
-<script>
-tailwind_config = {
-  theme: {
-    extend: {
-      colors: {
-        'dark': { 950: '#0a0e1a', 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' },
-        'accent': { 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' }
-      },
-      fontFamily: { 'sans': ['Inter', 'system-ui', 'sans-serif'] },
-      animation: {
-        'float': 'float 6s ease-in-out infinite',
-        'glow': 'glow 2s ease-in-out infinite alternate',
-        'fadeInUp': 'fadeInUp 0.6s ease-out',
-        'slideInLeft': 'slideInLeft 0.6s ease-out',
-        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-      },
-      keyframes: {
-        float: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-10px)' } },
-        glow: { 'from': { boxShadow: '0 0 20px #3b82f6' }, 'to': { boxShadow: '0 0 30px #60a5fa, 0 0 40px #3b82f6' } },
-        fadeInUp: { 'from': { opacity: '0', transform: 'translateY(30px)' }, 'to': { opacity: '1', transform: 'translateY(0)' } },
-        slideInLeft: { 'from': { opacity: '0', transform: 'translateX(-30px)' }, 'to': { opacity: '1', transform: 'translateX(0)' } }
-      }
-    }
-  }
-}
-if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.tailwind_config=tailwind_config}
-</script>
-
-<!-- TAILWIND & LUCIDE - DEFERRED FOR 100 SCORE -->
-<script src="https://cdn.tailwindcss.com" defer></script>
+<!-- LUCIDE ICONS ONLY - Tailwind is now precompiled into styles.css (no runtime JIT = no forced reflow / no layout shift) -->
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
 
 <!-- JSON-LD - Not render-blocking -->
@@ -398,9 +369,6 @@ function initApp(){
       if(target){target.scrollIntoView({behavior:'smooth',block:'start'});}
     });
   });
-  if(typeof tailwind!=='undefined' && window.tailwind_config){
-    tailwind.config=window.tailwind_config;
-  }
 }
 if(document.readyState==='loading'){
   document.addEventListener('DOMContentLoaded', initApp);

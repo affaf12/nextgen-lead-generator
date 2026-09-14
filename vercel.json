@@ -4,7 +4,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "installCommand": "uv pip install --system -r requirements.txt && PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers /usr/bin/python3 -m playwright install chromium --only-shell",
-  "buildCommand": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers /usr/bin/python3 -m playwright install chromium --only-shell && mkdir -p public && cp -r og-image.* llms.txt llms-full.txt robots.txt sitemap.xml humans.txt ai.txt creator.json public/ 2>/dev/null || true && echo ok > public/.keep",
+  "buildCommand": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers /usr/bin/python3 -m playwright install chromium --only-shell && mkdir -p public && cp -v og-image.* llms.txt llms-full.txt robots.txt sitemap.xml humans.txt ai.txt creator.json 2>/dev/null; ls -lh public/ && echo ok > public/.keep",
   "env": {
     "PLAYWRIGHT_BROWSERS_PATH": ".playwright-browsers"
   },
@@ -17,59 +17,60 @@
   },
   "headers": [
     {
-      "source": "/og-image.(webp|jpg|jpeg|png)",
+      "source": "/og-image.webp",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        },
-        {
-          "key": "Content-Type",
-          "value": "image/webp"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
+        { "key": "Content-Type", "value": "image/webp" }
+      ]
+    },
+    {
+      "source": "/og-image.(jpg|jpeg)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
+        { "key": "Content-Type", "value": "image/jpeg" }
+      ]
+    },
+    {
+      "source": "/og-image.png",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
+        { "key": "Content-Type", "value": "image/png" }
       ]
     },
     {
       "source": "/(.*).(webp|jpg|jpeg|png|svg|ico|css|js|woff|woff2|ttf)",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     },
     {
-      "source": "/(llms.txt|llms-full.txt|robots.txt|sitemap.xml|humans.txt|ai.txt|creator.json)",
+      "source": "/(llms.txt|llms-full.txt)",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600, must-revalidate"
-        },
-        {
-          "key": "Content-Type",
-          "value": "text/plain; charset=utf-8"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "Content-Type", "value": "text/markdown; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "/(robots.txt|sitemap.xml|humans.txt|ai.txt|creator.json)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
       ]
     },
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        }
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
       ]
     }
   ],
   "rewrites": [
+    {
+      "source": "/(og-image.webp|og-image.jpg|og-image.jpeg|og-image.png|llms.txt|llms-full.txt|robots.txt|sitemap.xml|humans.txt|ai.txt|creator.json)",
+      "destination": "/$1"
+    },
     {
       "source": "/(.*)",
       "destination": "/api/index.py"

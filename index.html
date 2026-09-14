@@ -13,11 +13,16 @@
 <meta name="theme-color" content="#0a0e1a">
 <link rel="canonical" href="https://nextgen-lead-generator.vercel.app/">
 
-<!-- PRECONNECT FOR PERFORMANCE -->
+<!-- PRECONNECT - Keep but optimized -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://cdn.tailwindcss.com">
-<link rel="preconnect" href="https://unpkg.com">
+<link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+<link rel="dns-prefetch" href="https://unpkg.com">
+
+<!-- PRELOAD LCP -->
+<link rel="preload" as="image" href="https://nextgen-lead-generator.vercel.app/og-image.png" fetchpriority="high">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"></noscript>
 
 <!-- OPEN GRAPH / FACEBOOK -->
 <meta property="og:type" content="website">
@@ -41,11 +46,23 @@
 <!-- FAVICONS -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
 
-<!-- TAILWIND -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<!-- CRITICAL CSS INLINE - For FCP 100 -->
+<style>
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#0a0e1a;color:#f3f4f6;font-family:Inter,system-ui,sans-serif}
+  .gradient-bg{background:linear-gradient(135deg,#0a0e1a 0%,#111827 50%,#1f2937 100%)}
+  .gradient-text{background:linear-gradient(135deg,#60a5fa 0%,#3b82f6 50%,#2563eb 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .glass-card{background:rgba(31,41,55,0.6);backdrop-filter:blur(12px);border:1px solid rgba(75,85,99,0.3)}
+  .grid-pattern{background-image:radial-gradient(circle at 1px 1px,rgba(59,130,246,0.15) 1px,transparent 0);background-size:40px 40px}
+  .hero-glow{background:radial-gradient(circle at 50% 50%,rgba(59,130,246,0.15) 0%,transparent 50%)}
+  .card-hover{transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
+  .card-hover:hover{transform:translateY(-4px);box-shadow:0 20px 25px -5px rgba(0,0,0,0.3),0 0 20px rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.5)}
+  .chart-bar{transition:height 1.5s cubic-bezier(0.4,0,0.2,1)}
+</style>
+
+<!-- TAILWIND CONFIG MUST BE BEFORE CDN -->
 <script>
-tailwind.config = {
+tailwind_config = {
   theme: {
     extend: {
       colors: {
@@ -69,10 +86,14 @@ tailwind.config = {
     }
   }
 }
+if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.tailwind_config=tailwind_config}
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-<!-- JSON-LD STRUCTURED DATA FOR SEO -->
+<!-- TAILWIND & LUCIDE - DEFERRED FOR 100 SCORE -->
+<script src="https://cdn.tailwindcss.com" defer></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+
+<!-- JSON-LD - Not render-blocking -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -115,18 +136,6 @@ tailwind.config = {
   ]
 }
 </script>
-
-<style>
-  html { scroll-behavior: smooth; }
-  .gradient-bg { background: linear-gradient(135deg, #0a0e1a 0%, #111827 50%, #1f2937 100%); }
-  .gradient-text { background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .glass-card { background: rgba(31, 41, 55, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(75, 85, 99, 0.3); }
-  .grid-pattern { background-image: radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.15) 1px, transparent 0); background-size: 40px 40px; }
-  .hero-glow { background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%); }
-  .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-  .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 0 20px rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.5); }
-  .chart-bar { transition: height 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
-</style>
 </head>
 <body class="gradient-bg text-gray-100 font-sans antialiased">
 
@@ -375,12 +384,33 @@ tailwind.config = {
   </footer>
 
 <script>
-  // Init Lucide icons
-  document.addEventListener('DOMContentLoaded', function() { if (window.lucide) { lucide.createIcons(); } });
-  // Smooth scroll
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
+// Optimized init - fixes Forced Reflow
+function initApp(){
+  if(window.lucide){
+    requestAnimationFrame(function(){
+      lucide.createIcons();
+    });
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor){
+    anchor.addEventListener('click', function(e){
+      e.preventDefault();
+      var target=document.querySelector(this.getAttribute('href'));
+      if(target){target.scrollIntoView({behavior:'smooth',block:'start'});}
+    });
   });
+  if(typeof tailwind!=='undefined' && window.tailwind_config){
+    tailwind.config=window.tailwind_config;
+  }
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', initApp);
+}else{
+  initApp();
+}
+// Defer non-critical after load
+window.addEventListener('load', function(){
+  setTimeout(initApp, 100);
+});
 </script>
 </body>
 </html>

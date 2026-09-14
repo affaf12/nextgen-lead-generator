@@ -1,0 +1,63 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "NextGen Lead Generator",
+  "alternateName": "NextGen Lead Generator by Muhammad Affaf",
+  "description": "AI-powered Google Maps scraper to find high-intent clients for Web Development, Marketing & Power BI / Fabric agencies. Created by Muhammad Affaf.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Person",
+    "name": "Muhammad Affaf",
+    "givenName": "Muhammad",
+    "familyName": "Affaf",
+    "url": "https://nextgenanalytics.cloud-ip.cc/",
+    "sameAs": [
+      "https://github.com/affaf12",
+      "https://nextgenanalytics.cloud-ip.cc/"
+    ],
+    "jobTitle": "Founder & Developer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "NextGen Analytics"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Karachi",
+      "addressRegion": "Sindh",
+      "addressCountry": "Pakistan"
+    }
+  },
+  "creator": {
+    "@type": "Person",
+    "name": "Muhammad Affaf"
+  },
+  "developer": {
+    "@type": "Person",
+    "name": "Muhammad Affaf"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "NextGen Analytics",
+    "founder": "Muhammad Affaf"
+  },
+  "url": "https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/",
+  "downloadUrl": "https://github.com/affaf12/nextgen-lead-generator",
+  "installUrl": "https://nextgen-lead-generator-nxp2zwykt8btyyvsutv42a.streamlit.app/",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Created by Muhammad Affaf",
+    "Google Maps Scraping",
+    "Triple Lead System - Web + Marketing + Power BI",
+    "Stop Button",
+    "195 Countries",
+    "High-ticket $950+ Power BI clients"
+  ],
+  "keywords": "Muhammad Affaf, NextGen Lead Generator by Muhammad Affaf, NextGen Analytics, Google Maps Scraper by Muhammad Affaf, Power BI clients, affaf12",
+  "datePublished": "2024",
+  "dateModified": "2026-09-13"
+}

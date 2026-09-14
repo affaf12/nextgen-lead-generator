@@ -20,7 +20,7 @@
 <link rel="dns-prefetch" href="https://unpkg.com">
 
 <!-- PRELOAD LCP -->
-<link rel="preload" as="image" href="https://nextgen-lead-generator.vercel.app/og-image.png" fetchpriority="high">
+<link rel="preload" as="image" href="/og-image.webp" fetchpriority="high" type="image/webp">
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"></noscript>
 
@@ -89,9 +89,20 @@ tailwind_config = {
 if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.tailwind_config=tailwind_config}
 </script>
 
-<!-- TAILWIND & LUCIDE - DEFERRED FOR 100 SCORE -->
-<script src="https://cdn.tailwindcss.com" defer></script>
+<!-- FIXED: Self-hosted Tailwind (no CDN = no CLS) + Lucide with contain -->
+<link rel="stylesheet" href="/styles.css">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+<style>
+/* CLS FIX - Reserve space for icons before JS loads */
+[data-lucide]{width:20px;height:20px;display:inline-block;contain:size layout;vertical-align:middle}
+.w-5.h-5{width:20px;height:20px}
+.w-4.h-4{width:16px;height:16px}
+.w-6.h-6{width:24px;height:24px}
+/* Prevent layout shift from cards */
+.glass-card{contain:layout style}
+/* Fix hero glow shift */
+.hero-glow{contain:layout;will-change:transform}
+</style>
 
 <!-- JSON-LD - Not render-blocking -->
 <script type="application/ld+json">
@@ -136,6 +147,7 @@ if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.ta
   ]
 }
 </script>
+<link rel="alternate" type="text/markdown" href="/llms.txt">
 </head>
 <body class="gradient-bg text-gray-100 font-sans antialiased">
 
@@ -145,7 +157,7 @@ if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.ta
       <div class="flex justify-between items-center h-16">
         <a href="#" class="flex items-center gap-2" aria-label="NextGen Leads Home">
           <div class="w-8 h-8 bg-accent-500 rounded-lg flex items-center justify-center">
-            <i data-lucide="radar" class="w-5 h-5 text-white" aria-hidden="true"></i>
+            <i data-lucide="radar" class="w-5 h-5 text-white" style="width:20px;height:20px" aria-hidden="true" aria-hidden="true"></i>
           </div>
           <span class="text-xl font-bold">NextGen<span class="gradient-text">Leads</span></span>
         </a>
@@ -157,7 +169,7 @@ if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.ta
         </div>
         <div class="flex items-center gap-3">
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg border border-dark-600 hover:border-accent-500 hover:bg-dark-800 transition-all">
-            <i data-lucide="github" class="w-4 h-4" aria-hidden="true"></i>
+            <i data-lucide="github" class="w-4 h-4" style="width:16px;height:16px" aria-hidden="true" aria-hidden="true"></i>
             <span class="text-sm">GitHub</span>
           </a>
           <a href="https://nextgen-lead-generator-nxp2zwykt8btyyvsutv42a.streamlit.app/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-accent-600 hover:bg-accent-700 rounded-lg text-sm font-medium transition-all hover:shadow-lg hover:shadow-accent-500/25">
@@ -188,12 +200,12 @@ if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.ta
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
           <a href="https://nextgen-lead-generator-nxp2zwykt8btyyvsutv42a.streamlit.app/" target="_blank" rel="noopener noreferrer" class="group px-8 py-4 bg-accent-600 hover:bg-accent-700 rounded-xl font-semibold text-white transition-all hover:shadow-xl hover:shadow-accent-500/30 hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center">
-            <i data-lucide="play" class="w-5 h-5" aria-hidden="true"></i>
+            <i data-lucide="play" class="w-5 h-5" style="width:20px;height:20px" aria-hidden="true" aria-hidden="true"></i>
             Try Live Demo Free
             <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
           </a>
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="px-8 py-4 glass-card border border-dark-600 rounded-xl font-semibold hover:border-accent-500 transition-all hover:scale-105 flex items-center gap-2 justify-center w-full sm:w-auto">
-            <i data-lucide="github" class="w-5 h-5" aria-hidden="true"></i>
+            <i data-lucide="github" class="w-5 h-5" style="width:20px;height:20px" aria-hidden="true" aria-hidden="true"></i>
             View on GitHub — Open Source
           </a>
         </div>
@@ -217,21 +229,21 @@ if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.ta
       </div>
       <div class="grid md:grid-cols-3 gap-6">
         <div class="glass-card rounded-2xl p-6 card-hover border-l-4 border-l-blue-500">
-          <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4"><i data-lucide="globe" class="w-6 h-6 text-blue-400"></i></div>
+          <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4"><i data-lucide="globe" class="w-6 h-6" style="width:24px;height:24px" aria-hidden="true" text-blue-400"></i></div>
           <h3 class="text-xl font-bold mb-2">💻 Web Development Clients</h3>
           <p class="text-gray-400 text-sm mb-3">Find businesses with NO website, dead domain, no SSL, slow speed, not mobile-friendly.</p>
           <div class="text-xs text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full inline-block">Avg. Ticket: $300-$800</div>
           <p class="text-xs text-gray-500 mt-3">Perfect niches: Gyms, Restaurants, Plumbers, Dentists with only Facebook page</p>
         </div>
         <div class="glass-card rounded-2xl p-6 card-hover border-l-4 border-l-orange-500">
-          <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center mb-4"><i data-lucide="megaphone" class="w-6 h-6 text-orange-400"></i></div>
+          <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center mb-4"><i data-lucide="megaphone" class="w-6 h-6" style="width:24px;height:24px" aria-hidden="true" text-orange-400"></i></div>
           <h3 class="text-xl font-bold mb-2">📢 Marketing Clients</h3>
           <p class="text-gray-400 text-sm mb-3">Find businesses with low rating (&lt;4.0), few reviews, missing meta tags, poor SEO.</p>
           <div class="text-xs text-orange-400 bg-orange-500/10 px-3 py-1 rounded-full inline-block">Avg. Ticket: $400-$1000/mo</div>
           <p class="text-xs text-gray-500 mt-3">Perfect niches: Clinics, Salons, Hotels with bad reputation</p>
         </div>
         <div class="glass-card rounded-2xl p-6 card-hover border-l-4 border-l-cyan-500">
-          <div class="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center mb-4"><i data-lucide="bar-chart-3" class="w-6 h-6 text-cyan-400"></i></div>
+          <div class="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center mb-4"><i data-lucide="bar-chart-3" class="w-6 h-6" style="width:24px;height:24px" aria-hidden="true" text-cyan-400"></i></div>
           <h3 class="text-xl font-bold mb-2">📊 Power BI / Fabric Clients</h3>
           <p class="text-gray-400 text-sm mb-3">Find high-data businesses with 100+ reviews but no dashboard — needs analytics.</p>
           <div class="text-xs text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full inline-block">Avg. Ticket: $950+ HIGH TICKET</div>
@@ -249,19 +261,19 @@ if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.ta
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/30 mb-4"><i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i><span class="text-sm text-red-400">The Problem</span></div>
           <h2 class="text-3xl lg:text-4xl font-bold mb-6">Cold Outreach Is Dead — 2% Reply Rate</h2>
           <div class="space-y-4 text-gray-400">
-            <div class="flex gap-3"><i data-lucide="x" class="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5"></i><p>Hours manually searching Google Maps for clients</p></div>
-            <div class="flex gap-3"><i data-lucide="x" class="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5"></i><p>No way to know which businesses need a website or dashboard</p></div>
-            <div class="flex gap-3"><i data-lucide="x" class="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5"></i><p>Wasting time on leads that already have great websites</p></div>
+            <div class="flex gap-3"><i data-lucide="x" class="w-6 h-6" style="width:24px;height:24px" aria-hidden="true" text-red-500 flex-shrink-0 mt-0.5"></i><p>Hours manually searching Google Maps for clients</p></div>
+            <div class="flex gap-3"><i data-lucide="x" class="w-6 h-6" style="width:24px;height:24px" aria-hidden="true" text-red-500 flex-shrink-0 mt-0.5"></i><p>No way to know which businesses need a website or dashboard</p></div>
+            <div class="flex gap-3"><i data-lucide="x" class="w-6 h-6" style="width:24px;height:24px" aria-hidden="true" text-red-500 flex-shrink-0 mt-0.5"></i><p>Wasting time on leads that already have great websites</p></div>
           </div>
         </div>
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-500/10 border border-accent-500/30 mb-4"><i data-lucide="zap" class="w-4 h-4 text-accent-400"></i><span class="text-sm text-accent-400">The Solution</span></div>
           <h2 class="text-3xl lg:text-4xl font-bold mb-6">Warm Leads, Delivered in 3 Minutes</h2>
           <div class="space-y-4 text-gray-400">
-            <div class="flex gap-3"><i data-lucide="check" class="w-6 h-6 text-accent-500 flex-shrink-0 mt-0.5"></i><p>Automated scraping targets your exact niche & location in 195 countries</p></div>
-            <div class="flex gap-3"><i data-lucide="check" class="w-6 h-6 text-accent-500 flex-shrink-0 mt-0.5"></i><p>AI scoring: Hot (no site + Power BI), Warm (outdated), Low</p></div>
-            <div class="flex gap-3"><i data-lucide="check" class="w-6 h-6 text-accent-500 flex-shrink-0 mt-0.5"></i><p>Auto-detects: missing websites, 100+ reviews but no data system = $950+ ticket</p></div>
-            <div class="flex gap-3"><i data-lucide="check" class="w-6 h-6 text-accent-500 flex-shrink-0 mt-0.5"></i><p>Extracts emails, phones for one-click outreach + Stop button</p></div>
+            <div class="flex gap-3"><i data-lucide="check" class="w-6 h-6" style="width:24px;height:24px" aria-hidden="true" text-accent-500 flex-shrink-0 mt-0.5"></i><p>Automated scraping targets your exact niche & location in 195 countries</p></div>
+            <div class="flex gap-3"><i data-lucide="check" class="w-6 h-6" style="width:24px;height:24px" aria-hidden="true" text-accent-500 flex-shrink-0 mt-0.5"></i><p>AI scoring: Hot (no site + Power BI), Warm (outdated), Low</p></div>
+            <div class="flex gap-3"><i data-lucide="check" class="w-6 h-6" style="width:24px;height:24px" aria-hidden="true" text-accent-500 flex-shrink-0 mt-0.5"></i><p>Auto-detects: missing websites, 100+ reviews but no data system = $950+ ticket</p></div>
+            <div class="flex gap-3"><i data-lucide="check" class="w-6 h-6" style="width:24px;height:24px" aria-hidden="true" text-accent-500 flex-shrink-0 mt-0.5"></i><p>Extracts emails, phones for one-click outreach + Stop button</p></div>
           </div>
         </div>
       </div>
@@ -354,8 +366,8 @@ if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.ta
       <h2 class="text-3xl lg:text-5xl font-bold mb-6">Stop Hunting. Start <span class="gradient-text">Closing High-Ticket</span>.</h2>
       <p class="text-xl text-gray-400 mb-10">Get your first 60 Hot leads in under 3 minutes. Triple system: Web + Marketing + Power BI. Free, open-source, 195 countries.</p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-        <a href="https://nextgen-lead-generator-nxp2zwykt8btyyvsutv42a.streamlit.app/" target="_blank" rel="noopener noreferrer" class="group px-8 py-4 bg-accent-600 hover:bg-accent-700 rounded-xl font-semibold text-white transition-all hover:shadow-xl hover:shadow-accent-500/30 hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center"><i data-lucide="play" class="w-5 h-5"></i>Try Live Demo — Find Power BI Clients<i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></a>
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="px-8 py-4 glass-card border border-dark-600 rounded-xl font-semibold hover:border-accent-500 transition-all hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center"><i data-lucide="github" class="w-5 h-5"></i>Clone on GitHub</a>
+        <a href="https://nextgen-lead-generator-nxp2zwykt8btyyvsutv42a.streamlit.app/" target="_blank" rel="noopener noreferrer" class="group px-8 py-4 bg-accent-600 hover:bg-accent-700 rounded-xl font-semibold text-white transition-all hover:shadow-xl hover:shadow-accent-500/30 hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center"><i data-lucide="play" class="w-5 h-5" style="width:20px;height:20px" aria-hidden="true"></i>Try Live Demo — Find Power BI Clients<i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="px-8 py-4 glass-card border border-dark-600 rounded-xl font-semibold hover:border-accent-500 transition-all hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center"><i data-lucide="github" class="w-5 h-5" style="width:20px;height:20px" aria-hidden="true"></i>Clone on GitHub</a>
       </div>
       <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
         <div class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i><span>No API Key Required</span></div>
@@ -371,7 +383,7 @@ if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.ta
   <footer class="border-t border-dark-700 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-4 gap-8 mb-8">
-        <div><div class="flex items-center gap-2 mb-4"><div class="w-8 h-8 bg-accent-500 rounded-lg flex items-center justify-center"><i data-lucide="radar" class="w-5 h-5 text-white"></i></div><span class="text-xl font-bold">NextGen<span class="gradient-text">Leads</span></span></div><p class="text-sm text-gray-400">AI-powered Google Maps scraper for agencies. Find Web Dev, Marketing & Power BI clients in 195 countries.</p></div>
+        <div><div class="flex items-center gap-2 mb-4"><div class="w-8 h-8 bg-accent-500 rounded-lg flex items-center justify-center"><i data-lucide="radar" class="w-5 h-5 text-white" style="width:20px;height:20px" aria-hidden="true"></i></div><span class="text-xl font-bold">NextGen<span class="gradient-text">Leads</span></span></div><p class="text-sm text-gray-400">AI-powered Google Maps scraper for agencies. Find Web Dev, Marketing & Power BI clients in 195 countries.</p></div>
         <div><h4 class="font-semibold mb-4">Product</h4><ul class="space-y-2 text-sm text-gray-400"><li><a href="#features" class="hover:text-accent-400">Features</a></li><li><a href="#how-it-works" class="hover:text-accent-400">How It Works</a></li><li><a href="https://nextgen-lead-generator-nxp2zwykt8btyyvsutv42a.streamlit.app/" class="hover:text-accent-400">Live Demo</a></li><li><a href="#stats" class="hover:text-accent-400">Stats</a></li></ul></div>
         <div><h4 class="font-semibold mb-4">Niches — High Ticket</h4><ul class="space-y-2 text-sm text-gray-400"><li>Real Estate + Power BI — $950+</li><li>Gyms + Power BI — $950+</li><li>Clinics + Power BI — $950+</li><li>Car Dealers + Power BI</li><li>Restaurants + AI Bot</li></ul></div>
         <div><h4 class="font-semibold mb-4">SEO — Lead Types</h4><ul class="space-y-2 text-sm text-gray-400"><li>Google Maps Scraper</li><li>Web Development Clients</li><li>Marketing Clients</li><li>Power BI Clients</li><li>AI Automation Clients</li></ul></div>
@@ -384,33 +396,25 @@ if(typeof tailwind!=='undefined'){tailwind.config=tailwind_config}else{window.ta
   </footer>
 
 <script>
-// Optimized init - fixes Forced Reflow
+// RESTORED - No forced reflow, keeps icons working
 function initApp(){
   if(window.lucide){
-    requestAnimationFrame(function(){
-      lucide.createIcons();
-    });
+    try{ lucide.createIcons(); }catch(e){}
   }
-  document.querySelectorAll('a[href^="#"]').forEach(function(anchor){
-    anchor.addEventListener('click', function(e){
-      e.preventDefault();
-      var target=document.querySelector(this.getAttribute('href'));
-      if(target){target.scrollIntoView({behavior:'smooth',block:'start'});}
+}
+document.addEventListener('DOMContentLoaded', function(){
+  initApp();
+  // Smooth scroll - passive, no reflow
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var href=this.getAttribute('href');
+      if(href && href.length>1){
+        var t=document.querySelector(href);
+        if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
+      }
     });
   });
-  if(typeof tailwind!=='undefined' && window.tailwind_config){
-    tailwind.config=window.tailwind_config;
-  }
-}
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded', initApp);
-}else{
-  initApp();
-}
-// Defer non-critical after load
-window.addEventListener('load', function(){
-  setTimeout(initApp, 100);
-});
+}, {once:true});
 </script>
 </body>
 </html>

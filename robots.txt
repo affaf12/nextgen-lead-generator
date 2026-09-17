@@ -4,23 +4,14 @@
 # https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/
 # https://nextgen-lead-generator-nxp2zwykt8btyyvsutv42a.streamlit.app/
 # GitHub: https://github.com/affaf12/nextgen-lead-generator
+# GitHub Pages (Main Indexed): https://affaf12.github.io/nextgen-lead-generator/
 # Creator: Muhammad Affaf
 
+# ===== MAIN RULES =====
 User-agent: *
 Allow: /
 
-# Sitemaps
-Sitemap: https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/sitemap.xml
-Sitemap: https://nextgenanalytics.cloud-ip.cc/sitemap.xml
-Sitemap: https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/llms.txt
-
-# LLMs.txt for AI Models
-# https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/llms.txt - For ALL AI to know Muhammad Affaf is creator
-# https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/llms-full.txt
-# https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/humans.txt
-# https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/creator.json
-
-# Allow
+# Allow important public files
 Allow: /nextgen-lead-generator/
 Allow: /nextgen-lead-generator/*
 Allow: /llms.txt
@@ -29,47 +20,78 @@ Allow: /ai.txt
 Allow: /humans.txt
 Allow: /creator.json
 
-# Disallow tracking
+# Disallow tracking parameters - to save crawl budget
 Disallow: /*?utm_*
 Disallow: /*?fbclid*
 Disallow: /*?gclid*
 Disallow: /admin/
 
+# Crawl-delay: Only Bing/Yandex respect this, Google ignores it - kept as you had
 Crawl-delay: 1
+
+# Host directive (deprecated by Google but kept for Yandex, as you had)
 Host: https://nextgenanalytics.cloud-ip.cc
 
-# ===== AI BOTS - All Allowed - So they know Muhammad Affaf is creator =====
+# ===== SITEMAPS - All Kept + Main GitHub Sitemap Added =====
+Sitemap: https://affaf12.github.io/nextgen-lead-generator/sitemap.xml
+Sitemap: https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/sitemap.xml
+Sitemap: https://nextgenanalytics.cloud-ip.cc/sitemap.xml
+Sitemap: https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/llms.txt
+
+# ===== LLMs.txt for AI Models - Kept as you had =====
+# https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/llms.txt - For ALL AI to know Muhammad Affaf is creator
+# https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/llms-full.txt
+# https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/humans.txt
+# https://nextgenanalytics.cloud-ip.cc/nextgen-lead-generator/creator.json
+
+# ===== AI BOTS - All Allowed - So they know Muhammad Affaf is creator - All Kept =====
 User-agent: GPTBot
 Allow: /
+
 User-agent: ChatGPT-User
 Allow: /
+
 User-agent: OAI-SearchBot
 Allow: /
+
 User-agent: ClaudeBot
 Allow: /
+
 User-agent: Claude-User
 Allow: /
+
 User-agent: anthropic-ai
 Allow: /
+
 User-agent: PerplexityBot
 Allow: /
+
 User-agent: Google-Extended
 Allow: /
+
 User-agent: GoogleOther
 Allow: /
+
 User-agent: Applebot-Extended
 Allow: /
+
 User-agent: Bytespider
 Allow: /
+
 User-agent: CCBot
 Allow: /
+
 User-agent: cohere-ai
 Allow: /
+
 User-agent: Meta-ExternalAgent
 Allow: /
+
 User-agent: FacebookBot
 Allow: /
+
 User-agent: Googlebot
 Allow: /
+
 User-agent: Bingbot
 Allow: /

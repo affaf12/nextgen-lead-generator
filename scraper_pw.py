@@ -3,8 +3,40 @@
 import os
 import random
 import re
+import subprocess
+import sys
 from playwright.sync_api import Error as PlaywrightError, sync_playwright
 import config
+
+# ─────────────────────────────────────────────────────────────
+# Playwright Chromium auto-install (Streamlit Cloud fix)
+# ─────────────────────────────────────────────────────────────
+def _ensure_playwright_browser():
+    """Auto-install Chromium if missing. Safe to call multiple times."""
+    try:
+        with sync_playwright() as pw:
+            try:
+                pw.chromium.launch(
+                    headless=True,
+                    args=["--no-sandbox", "--disable-dev-shm-usage"],
+                ).close()
+                return  # Already installed ✅
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+    print("🔧 Playwright Chromium missing — installing...", flush=True)
+    try:
+        subprocess.run(
+            [sys.executable, "-m", "playwright", "install", "chromium"],
+            check=False,
+            timeout=300,
+        )
+        print("✅ Playwright Chromium install attempt complete.", flush=True)
+    except Exception as exc:
+        print(f"⚠️ Chromium install failed: {exc}", flush=True)
+
 
 def _accept_cookies(page):
     """Try to dismiss the Google consent/cookie banner if present."""
@@ -24,6 +56,7 @@ def _accept_cookies(page):
                 return
     except Exception:
         pass
+
 
 def _collect_listing_urls(page, max_results, progress_callback=None):
     feed = page.locator('div[role="feed"]')
@@ -65,6 +98,7 @@ def _collect_listing_urls(page, max_results, progress_callback=None):
 
     return ordered_urls[:max_results]
 
+
 def _extract_detail(page):
     """Extract business details from the detail panel."""
     info = {}
@@ -87,7 +121,7 @@ def _extract_detail(page):
             if rating_text and rating_text != "":
                 rating = rating_text
                 break
-    
+
     reviews_selectors = [
         'div.F7nice span[aria-label*="reviews"]',
         'div.F7nice span span',
@@ -103,11 +137,11 @@ def _extract_detail(page):
                     try:
                         reviews = int(num_match.group(1).replace(",", ""))
                         break
-                    except:
+                    except Exception:
                         continue
             if reviews > 0:
                 break
-    
+
     info["rating"] = rating
     info["reviews"] = reviews
     cat_el = page.locator("button.DkEaL")
@@ -121,6 +155,7 @@ def _extract_detail(page):
     info["maps_url"] = page.url
     return info
 
+
 def _should_force_headless():
     if os.environ.get("VERCEL") or os.environ.get("SPACE_ID") or os.environ.get("STREAMLIT_RUNTIME_ENV"):
         return True
@@ -128,24 +163,38 @@ def _should_force_headless():
         return True
     return False
 
+
 def _launch_browser(pw):
-    """Upgraded - Single and stable version for Streamlit Cloud"""
+    """Launch Chromium — auto-installs if missing (Streamlit Cloud safe)."""
     launch_args = [
         "--no-sandbox",
         "--disable-dev-shm-usage",
         "--disable-setuid-sandbox",
         "--disable-gpu",
+        "--single-process",
     ]
-    headless = True if _should_force_headless() else getattr(config, 'HEADLESS', True)
-    try:
+    headless = True if _should_force_headless() else getattr(config, "HEADLESS", True)
+
+    def _try_launch():
         return pw.chromium.launch(headless=headless, args=launch_args)
+
+    try:
+        return _try_launch()
     except PlaywrightError as exc:
         message = str(exc)
-        if "Executable doesn't exist" in message:
-            raise RuntimeError(
-                "Playwright Chromium is not installed. Run: python -m playwright install chromium"
-            ) from exc
+        if "Executable doesn't exist" in message or "is not installed" in message:
+            # Auto-install and retry once
+            _ensure_playwright_browser()
+            try:
+                return _try_launch()
+            except PlaywrightError as exc2:
+                raise RuntimeError(
+                    "Playwright Chromium install failed. "
+                    "Ensure packages.txt has system libs (libnss3, libatk1.0-0, etc.) "
+                    "and requirements.txt pins playwright==1.52.0."
+                ) from exc2
         raise
+
 
 def scrape_google_maps(query, max_results=None, progress_callback=None):
     if max_results is None:
@@ -153,6 +202,10 @@ def scrape_google_maps(query, max_results=None, progress_callback=None):
     results = []
     if progress_callback:
         progress_callback(0, max_results, "Starting browser...")
+
+    # Pre-flight: ensure Chromium exists before opening context
+    _ensure_playwright_browser()
+
     with sync_playwright() as pw:
         browser = _launch_browser(pw)
         context = browser.new_context(
